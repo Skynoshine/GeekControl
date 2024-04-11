@@ -20,9 +20,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    final String searchTerm = _searchController.text.isNotEmpty
-        ? _searchController.text
-        : 'cat';
+    final String searchTerm =
+        _searchController.text.isNotEmpty ? _searchController.text : 'cat';
     _gifUrlFuture = TenorRepository().getGifUrl(searchTerm);
   }
 
@@ -93,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       children: [
                         Stack(
-                          alignment: Alignment.center,
+                          alignment: Alignment.topCenter,
                           children: [
                             Container(
                               decoration: BoxDecoration(
@@ -103,11 +102,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                       'https://media1.tenor.com/m/lLT_5gUiMegAAAAC/trickshot.gif'),
                                 ),
                               ),
-                              height: 150,
+                              height: MediaQuery.of(context).size.height / 5,
                               width: MediaQuery.of(context).size.width,
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 120),
+                              padding: const EdgeInsets.only(top: 65),
                               child: CircleAvatar(
                                 radius: 50,
                                 backgroundImage: NetworkImage(snapshot.data!),
@@ -115,17 +114,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ],
                         ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         const HitagiText(
                           text: 'Skynoshine',
                           typography: HitagiTypography.button,
-                        ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
-                        Container(
-                          height: 400,
-                          width: MediaQuery.of(context).size.width,
-                          color: Colors.black,
                         ),
                       ],
                     ),
