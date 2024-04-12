@@ -50,15 +50,7 @@ GeekControl é uma aplicação desenvolvida em Flutter que permite aos usuários
 
 - Para relatar problemas, bugs ou sugestões, abra uma nova issue no repositório do GitHub.
 - Para contribuir com código, faça um fork do repositório e envie um pull request com suas alterações.
-
-### Autores
-
-GeekControl foi desenvolvido por uma equipe apaixonada por anime e programação.
-
-- João da Silva - Desenvolvedor Flutter
-- Maria Souza - Designer UI/UX
-- Carlos Oliveira - Gerente de Projeto
-
+- 
 ### Licença
 
 Este projeto está licenciado sob a [Licença MIT](https://opensource.org/licenses/MIT).
