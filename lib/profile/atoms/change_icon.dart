@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/core/library/hitagi_cup/features/text/hitagi_text.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
 
 class ChangeIconWidget extends StatelessWidget {
   const ChangeIconWidget({Key? key}) : super(key: key);
@@ -20,8 +20,7 @@ class ChangeIconWidget extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Adicione a lógica para mudar o ícone aqui
-                      Navigator.pop(context); // Fecha o popup
+                      Navigator.pop(context);
                     },
                     child: const Text('Mudar'),
                   ),

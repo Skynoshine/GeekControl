@@ -1,5 +1,5 @@
 class Query {
-  static String anilistQuery({required String title}) {
+  static String abrangeQuery({required String title}) {
     return '''
  query  {
   Media(search: "$title") {
@@ -41,6 +41,59 @@ class Query {
           }
         }
       }
+    }
+  }
+}
+    ''';
+  }
+
+  static String releasesQuery() {
+    return '''
+  query {
+  Page {
+    media(sort: TRENDING_DESC, type: ANIME) {
+      id
+      bannerImage
+      coverImage {
+        extraLarge
+      }
+      airingSchedule(notYetAired: true, perPage: 1) {
+        nodes {
+          episode
+          id
+          media {
+            id
+            bannerImage
+            coverImage {
+              extraLarge
+            }
+          }
+        }
+      }
+      title {
+        romaji
+        english
+      }
+      episodes
+      updatedAt
+      status
+      season
+      seasonYear
+      episodes
+      nextAiringEpisode {
+        id
+      }
+      startDate {
+        year
+        month
+        day
+      }
+      endDate {
+        year
+        month
+        day
+      }
+      
     }
   }
 }

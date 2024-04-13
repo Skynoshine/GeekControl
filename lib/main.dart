@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/routes/routes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:geekcontrol/routes/routes.dart';
 
 void main() async {
   runApp(const MyApp());

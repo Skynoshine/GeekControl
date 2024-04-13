@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/repositories/anilist/anilist_repository.dart';
-import 'package:myapp/core/library/hitagi_cup/search/search_hitagi.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/search/search_hitagi.dart';
+import 'package:geekcontrol/repositories/anilist/anilist_repository.dart';
 
 class SearchPage extends StatelessWidget {
   final AnilistRepository? repository;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/repositories/anilist/anilist_repository.dart';
-import 'package:myapp/repositories/anilist/entities/manga_anilist_entity.dart';
-import 'package:myapp/repositories/anilist/entities/reviews_entity.dart';
-import 'package:myapp/reviews/pages/reviews_page.dart';
+import 'package:geekcontrol/repositories/anilist/anilist_repository.dart';
+import 'package:geekcontrol/repositories/anilist/entities/manga_anilist_entity.dart';
+import 'package:geekcontrol/repositories/anilist/entities/reviews_entity.dart';
+import 'package:geekcontrol/reviews/pages/reviews_page.dart';
 
 class HitagiSearchWidget extends StatefulWidget {
   final AnilistRepository searchController;

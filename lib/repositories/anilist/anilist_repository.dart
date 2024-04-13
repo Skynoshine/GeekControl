@@ -1,31 +1,44 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:myapp/repositories/anilist/entities/manga_anilist_entity.dart';
-
-import 'package:myapp/repositories/anilist/queries/anilist_query.dart';
-import 'package:myapp/core/library/hitagi_cup/utils.dart';
+import 'package:geekcontrol/repositories/anilist/entities/manga_anilist_entity.dart';
+import 'package:geekcontrol/repositories/anilist/entities/releases_anilist_entity.dart';
+import 'package:geekcontrol/repositories/anilist/queries/anilist_query.dart';
+import 'package:geekcontrol/utils/api_utils.dart';
 
 class AnilistRepository {
-  Future _getAnilistResponse({required String title}) async {
-    final queryBody = {'query': Query.anilistQuery(title: title)};
-
-    final response = await http.post(Uri.parse('https://graphql.anilist.co'),
-        headers: Utils.headers, body: jsonEncode(queryBody));
+  Future<AnilistEntity> _getAbrangeResponse({required String title}) async {
+    final response = await AnilistUtils.basicResponse(
+      title: title,
+      query: Query.abrangeQuery(title: title),
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
       return AnilistEntity.toEntity(jsonResponse);
     } else {
-      return response.body;
+      return AnilistEntity.empty();
     }
   }
 
-  Future<AnilistEntity> _anilistData({required String title}) async {
-    final entity = await _getAnilistResponse(title: title);
+  Future<AnilistEntity> _getData({required String title}) async {
+    final entity = await _getAbrangeResponse(title: title);
     return entity;
   }
 
-  searchManga({required String title}) async {
-    return await _anilistData(title: title);
+  Future<AnilistEntity> searchManga({required String title}) async {
+    await getReleasesAnimes();
+    return await _getData(title: title);
+  }
+
+  Future<ReleasesAnilistEntity> getReleasesAnimes() async {
+    final response = await AnilistUtils.basicResponse(
+      query: Query.releasesQuery(),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      return ReleasesAnilistEntity.toEntity(jsonResponse);
+    } else {
+      return ReleasesAnilistEntity.empty();
+    }
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/home/atoms/bottom_bar.dart';
+import 'package:geekcontrol/home/atoms/bottom_bar.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);

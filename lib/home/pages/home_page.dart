@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/home/atoms/bottom_bar.dart';
-import 'package:myapp/home/atoms/search_page.dart';
+import 'package:geekcontrol/home/atoms/bottom_bar.dart';
+import 'package:geekcontrol/home/atoms/search_page.dart';
+
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

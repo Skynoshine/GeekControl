@@ -1,5 +1,5 @@
-name: myapp
-description: A new Flutter project.
+name: geekcontrol
+description: Aplicação para controle de seus animes/mangás favoritos.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -44,6 +44,7 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   dotenv: ^4.2.0
   flutter_dotenv: ^5.1.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

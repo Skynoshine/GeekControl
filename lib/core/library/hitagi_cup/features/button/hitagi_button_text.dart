@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/core/library/hitagi_cup/features/text/hitagi_text.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
+
 
 class HitagiButtonText extends StatelessWidget {
   final String text;

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/core/library/hitagi_cup/features/dialogs/default_dialogs.dart';
-import 'package:myapp/core/library/hitagi_cup/features/dialogs/hitagi_dialog.dart';
-import 'package:myapp/core/library/hitagi_cup/features/dialogs/hitagi_search_dialog.dart';
-import 'package:myapp/core/library/hitagi_cup/features/text/hitagi_text.dart';
-import 'package:myapp/home/atoms/bottom_bar.dart';
-import 'package:myapp/repositories/tenor_images/tenor_repository.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/dialogs/default_dialogs.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/dialogs/hitagi_dialog.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/dialogs/hitagi_search_dialog.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
+import 'package:geekcontrol/home/atoms/bottom_bar.dart';
+import 'package:geekcontrol/repositories/tenor_images/tenor_repository.dart';
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     final String searchTerm = _searchController.text.isNotEmpty
         ? _searchController.text
-        : 'cat';
+        : 'cat dancing';
     _gifUrlFuture = TenorRepository().getGifUrl(searchTerm);
   }
 
@@ -33,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
         preferredSize: const Size.fromHeight(40),
         child: AppBar(
           title: const HitagiText(
-            text: 'Skynoshine',
+            text: 'Seu perfil',
           ),
           actions: [
             IconButton(

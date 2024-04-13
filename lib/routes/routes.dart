@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/home/pages/home_page.dart';
-import 'package:myapp/profile/pages/profile_page.dart';
-import 'package:myapp/reviews/pages/reviews_page_two.dart';
-import 'package:myapp/home/atoms/search_page.dart';
-import 'package:myapp/settings_page/pages/settings_page.dart';
+import 'package:geekcontrol/home/atoms/animes_carousel.dart';
+import 'package:geekcontrol/home/atoms/search_page.dart';
+import 'package:geekcontrol/home/pages/home_page.dart';
+import 'package:geekcontrol/profile/pages/profile_page.dart';
+import 'package:geekcontrol/settings_page/pages/settings_page.dart';
 
 enum RoutesName {
   home,
@@ -11,6 +11,7 @@ enum RoutesName {
   settings,
   profile,
   reviews,
+  animesCarousel,
 }
 
 extension RoutesNameExtension on RoutesName {
@@ -26,8 +27,10 @@ extension RoutesNameExtension on RoutesName {
         return 'profile';
       case RoutesName.reviews:
         return 'reviews';
+      case RoutesName.animesCarousel:
+        return 'animesCarousel';
       default:
-        throw Exception('Rota não encontrada para o enum $this');
+        throw Exception('Rota não encontrada $this');
     }
   }
 }
@@ -38,7 +41,8 @@ class AppRoutes {
     RoutesName.search.route: (context) => const SearchPage(),
     RoutesName.settings.route: (context) => const SettingsPage(),
     RoutesName.profile.route: (context) => const ProfilePage(),
-    RoutesName.reviews.route: (context) => const ReviewsPage(),
+    RoutesName.reviews.route: (context) => const AnimesCarouselWidget(),
+    RoutesName.animesCarousel.route: (context) => const AnimesCarouselWidget(),
   };
 
   static bool isCurrentRoute(BuildContext context, String routeName) {

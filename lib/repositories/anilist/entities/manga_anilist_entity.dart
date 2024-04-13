@@ -1,4 +1,5 @@
-import 'package:myapp/repositories/anilist/entities/reviews_entity.dart';
+
+import 'package:geekcontrol/repositories/anilist/entities/reviews_entity.dart';
 
 class AnilistEntity {
   final int id;
@@ -18,7 +19,7 @@ class AnilistEntity {
     return AnilistEntity(
       id: json['data']['Media']['id'],
       name: json['data']['Media']['title']['english'],
-      media: AnilistMediaEntity.fromJson(json),
+      media: AnilistMediaEntity.toEntity(json),
       review: MangaReviewEntity.toEntityList(json),
     );
   }
@@ -47,7 +48,7 @@ class AnilistMediaEntity {
     required this.type,
   });
 
-  factory AnilistMediaEntity.fromJson(Map<String, dynamic> json) {
+  factory AnilistMediaEntity.toEntity(Map<String, dynamic> json) {
     return AnilistMediaEntity(
       id: json['data']['Media']['id'],
       banner: json['data']['Media']['bannerImage'],

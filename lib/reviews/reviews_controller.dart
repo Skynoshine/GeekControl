@@ -1,4 +1,5 @@
-import 'package:myapp/repositories/anilist/entities/manga_anilist_entity.dart';
+
+import 'package:geekcontrol/repositories/anilist/entities/manga_anilist_entity.dart';
 
 class MangasController {
   double mediaReviews(List<AnilistEntity> anilist) {

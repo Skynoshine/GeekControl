@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/routes/routes.dart';
+import 'package:geekcontrol/routes/routes.dart';
 
 class BottomBarWidget extends StatelessWidget {
   const BottomBarWidget({Key? key}) : super(key: key);

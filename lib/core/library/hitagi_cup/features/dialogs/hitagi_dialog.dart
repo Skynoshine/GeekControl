@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/core/library/hitagi_cup/features/button/hitagi_button.dart';
-import 'package:myapp/core/library/hitagi_cup/features/button/hitagi_button_text.dart';
-import 'package:myapp/core/library/hitagi_cup/features/text/hitagi_text.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/button/hitagi_button.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/button/hitagi_button_text.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
 
 // ignore: unused_element
 var _description = '';
