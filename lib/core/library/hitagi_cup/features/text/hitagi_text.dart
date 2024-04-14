@@ -18,6 +18,7 @@ enum IconPosition {
 
 class HitagiText extends StatelessWidget {
   final String text;
+  final double? size;
   final HitagiTypography typography;
   final Color? color;
   final int? maxLines;
@@ -28,12 +29,17 @@ class HitagiText extends StatelessWidget {
   final double? iconSize;
   final IconPosition? iconPosition;
   final Color? iconColor;
+  final bool? isBold;
+  final bool? softWrap;
 
   const HitagiText({
     Key? key,
     required this.text,
     this.typography = HitagiTypography.body,
     this.color,
+    this.isBold,
+    this.softWrap,
+    this.size,
     this.maxLines,
     this.overflow,
     this.maskFilter,
@@ -53,7 +59,7 @@ class HitagiText extends StatelessWidget {
         size: iconSize ?? typography.size,
         color: iconColor,
       ));
-      children.add(const SizedBox(width: 8));
+      children.add(const SizedBox(width: 4));
     }
 
     children.add(
@@ -62,9 +68,10 @@ class HitagiText extends StatelessWidget {
         maxLines: maxLines,
         overflow: overflow,
         style: Theme.of(context).textTheme.bodySmall!.copyWith(
-              fontSize: typography.size,
-              fontWeight:
-                  typography.isBold ? FontWeight.bold : FontWeight.normal,
+              fontSize: size ?? typography.size,
+              fontWeight: isBold ?? typography.isBold
+                  ? FontWeight.bold
+                  : FontWeight.normal,
               foreground: Paint()
                 ..style = PaintingStyle.fill
                 ..color = color ?? Colors.black
@@ -74,6 +81,7 @@ class HitagiText extends StatelessWidget {
                 ),
             ),
         textAlign: textAlign,
+        softWrap: softWrap ?? true,
       ),
     );
 

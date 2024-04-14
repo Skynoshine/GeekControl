@@ -4,7 +4,11 @@ class Query {
  query  {
   Media(search: "$title") {
     id
+    averageScore
+    meanScore
+    genres
     bannerImage
+    status
     coverImage {
       large
       extraLarge
@@ -47,11 +51,11 @@ class Query {
     ''';
   }
 
-  static String releasesQuery() {
+  static String releasesQuery(String? title) {
     return '''
   query {
   Page {
-    media(sort: TRENDING_DESC, type: ANIME) {
+    media(${title != null && title.isNotEmpty ? 'search: "$title"' : 'sort: TRENDING_DESC'}, type: ANIME) {
       id
       bannerImage
       coverImage {
@@ -93,7 +97,7 @@ class Query {
         month
         day
       }
-      
+
     }
   }
 }

@@ -12,6 +12,9 @@ class MangaReviewEntity {
   int createdAt;
   int updatedAt;
   UserReviews userReviews;
+  int meanScore;
+  int averageScore;
+  String status;
 
   MangaReviewEntity({
     required this.idPost,
@@ -27,6 +30,9 @@ class MangaReviewEntity {
     required this.updatedAt,
     required this.userReviews,
     required this.title,
+    required this.meanScore,
+    required this.averageScore,
+    required this.status,
   });
 
   static List<MangaReviewEntity> toEntityList(Map<String, dynamic> json) {
@@ -50,11 +56,13 @@ class MangaReviewEntity {
           siteUrl: node['siteUrl'],
           createdAt: node['createdAt'],
           updatedAt: node['updatedAt'],
+          meanScore: json['data']['Media']['meanScore'],
+          averageScore: json['data']['Media']['averageScore'],
+          status: json['data']['Media']['status'],
           userReviews: UserReviews.fromJson(node),
         ));
       }
     }
-
     return reviewsList;
   }
 
@@ -71,6 +79,9 @@ class MangaReviewEntity {
         createdAt = 0,
         updatedAt = 0,
         title = '',
+        meanScore = 0,
+        averageScore = 0,
+        status = '',
         userReviews = UserReviews.empty();
 }
 
@@ -89,7 +100,7 @@ class UserReviews {
 
   factory UserReviews.fromJson(Map<String, dynamic> json) {
     return UserReviews(
-      body:  json['body'] ?? 'N/A',
+      body: json['body'] ?? 'N/A',
       name: json['user']['name'],
       avatar: json['user']['avatar']['large'] ?? '',
       bannerImage: json['user']['bannerImage'] ?? '',

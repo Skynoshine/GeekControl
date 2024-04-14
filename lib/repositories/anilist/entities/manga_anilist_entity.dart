@@ -1,9 +1,9 @@
-
 import 'package:geekcontrol/repositories/anilist/entities/reviews_entity.dart';
 
 class AnilistEntity {
   final int id;
   final String name;
+  final List<String> genres;
   final AnilistMediaEntity media;
   final List<MangaReviewEntity> review;
 
@@ -12,13 +12,18 @@ class AnilistEntity {
     required this.name,
     required this.media,
     required this.review,
-    // required this.characters,
+    required this.genres,
   });
 
   factory AnilistEntity.toEntity(Map<String, dynamic> json) {
+    List<dynamic> genresJson = json['data']['Media']['genres'];
+
+    List<String> genresList =
+        genresJson.map((genre) => genre.toString()).toList();
     return AnilistEntity(
       id: json['data']['Media']['id'],
       name: json['data']['Media']['title']['english'],
+      genres: genresList,
       media: AnilistMediaEntity.toEntity(json),
       review: MangaReviewEntity.toEntityList(json),
     );
@@ -27,6 +32,7 @@ class AnilistEntity {
   AnilistEntity.empty()
       : id = 0,
         name = '',
+        genres = [],
         media = AnilistMediaEntity.empty(),
         review = [MangaReviewEntity.empty()];
 }
@@ -49,13 +55,14 @@ class AnilistMediaEntity {
   });
 
   factory AnilistMediaEntity.toEntity(Map<String, dynamic> json) {
+    final Map<String, dynamic> media = json['data']['Media'];
     return AnilistMediaEntity(
-      id: json['data']['Media']['id'],
-      banner: json['data']['Media']['bannerImage'],
-      coverImage: json['data']['Media']['coverImage']['large'],
-      title: json['data']['Media']['title']['english'],
-      description: json['data']['Media']['description'],
-      type: json['data']['Media']['type'],
+      id: media['id'],
+      banner: media['bannerImage'],
+      coverImage: media['coverImage']['large'],
+      title: media['title']['english'],
+      description: media['description'],
+      type: media['type'],
     );
   }
 

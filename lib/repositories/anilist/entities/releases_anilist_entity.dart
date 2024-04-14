@@ -9,9 +9,9 @@ class ReleasesAnilistEntity {
   final String status;
   final String season;
   final int seasonYear;
-  final Map<String, dynamic> nextAiringEpisode;
+  final Map<String, dynamic>? nextAiringEpisode;
   final Map<String, dynamic> startDate;
-  final Map<String, dynamic> endDate;
+  final Map<String, dynamic>? endDate;
 
   ReleasesAnilistEntity({
     required this.id,
@@ -40,10 +40,10 @@ class ReleasesAnilistEntity {
       season: path['season'],
       seasonYear: path['seasonYear'],
       startDate: path['startDate'],
-      endDate: path['endDate'],
+      endDate: path['endDate'] ?? {},
       bannerImage: path['bannerImage'],
       coverImage: path['coverImage']['extraLarge'],
-      nextAiringEpisode: path['nextAiringEpisode'],
+      nextAiringEpisode: path['nextAiringEpisode'] ?? {},
       episodeId: path['id'],
     );
   }

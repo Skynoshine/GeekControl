@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/utils.dart';
+import 'package:geekcontrol/home/components/cover_responsive.dart';
 import 'package:geekcontrol/repositories/anilist/anilist_repository.dart';
+import 'package:geekcontrol/repositories/anilist/entities/manga_anilist_entity.dart';
 import 'package:geekcontrol/repositories/anilist/entities/releases_anilist_entity.dart';
+import 'package:geekcontrol/repositories/anilist/utils/convert_state.dart';
 
 class AnimesCarouselWidget extends StatelessWidget {
   const AnimesCarouselWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ReleasesAnilistEntity>(
-      future: _fetchReleases(),
+    return FutureBuilder<List<dynamic>>(
+      future: AnilistRepository().fetchAllData(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          final releases = snapshot.data!;
+          final releases = snapshot.data![0] as ReleasesAnilistEntity;
+          final anilist = snapshot.data![1] as AnilistEntity;
+
           return Scaffold(
             body: Stack(
               children: [
@@ -25,20 +31,21 @@ class AnimesCarouselWidget extends StatelessWidget {
                   child: Image.network(
                     releases.bannerImage,
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.2 + 40,
+                    height: MediaQuery.of(context).size.height * 0.2 + 35,
                     fit: BoxFit.cover,
                     filterQuality: FilterQuality.high,
                   ),
                 ),
                 Positioned(
                   bottom: MediaQuery.of(context).size.height * 0.5,
-                  top: MediaQuery.of(context).size.height * 0.1,
-                  left: MediaQuery.of(context).size.height * 0.1 - 55,
+                  top: 60,
+                  left: 60 / 30,
+                  right: 60 / 30,
                   child: Row(
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        width: MediaQuery.of(context).size.width / 2.3,
+                        height: CoverResponsive.calcResponsiveHeigth(context),
+                        width: CoverResponsive.calcResponsiveWidth(context),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 4.0),
                           child: ClipRRect(
@@ -51,7 +58,7 @@ class AnimesCarouselWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 12.0),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,11 +67,31 @@ class AnimesCarouselWidget extends StatelessWidget {
                             text: releases.englishTitle,
                             typography: HitagiTypography.giga,
                           ),
-                          const HitagiText(
-                            text: 'Notas - 7/10',
-                            typography: HitagiTypography.title,
+                          HitagiText(
+                            text:
+                                '${anilist.review.first.averageScore}% Gostaram',
                             icon: Icons.star,
-                            iconColor: Color.fromARGB(255, 223, 201, 4),
+                            typography: HitagiTypography.title,
+                            iconColor: const Color.fromARGB(255, 223, 201, 4),
+                          ),
+                          HitagiText(
+                            text: ConvertState.toPortuguese(
+                                anilist.review.first.status),
+                            typography: HitagiTypography.title,
+                            icon: Icons.remove_red_eye_sharp,
+                          ),
+                          HitagiText(
+                            text: '${anilist.genres.first} ⚬ ${anilist.genres[1]}',
+                            size: 16,
+                            icon: Icons.book,
+                            isBold: true,
+                            softWrap: true,
+                          ),
+                           HitagiText(
+                            text: Utils.timeFromMSeconds(releases.seasonYear),
+                            size: 16,
+                            icon: Icons.book,
+                            isBold: true,
                           ),
                         ],
                       ),
@@ -77,9 +104,5 @@ class AnimesCarouselWidget extends StatelessWidget {
         }
       },
     );
-  }
-
-  Future<ReleasesAnilistEntity> _fetchReleases() async {
-    return AnilistRepository().getReleasesAnimes();
   }
 }

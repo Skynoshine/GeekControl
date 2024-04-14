@@ -5,6 +5,12 @@ import 'package:geekcontrol/repositories/anilist/queries/anilist_query.dart';
 import 'package:geekcontrol/utils/api_utils.dart';
 
 class AnilistRepository {
+  Future<List<dynamic>> fetchAllData() async {
+    final releases = getReleasesAnimes();
+    final anilist = searchManga(title: 'Overlord');
+    return Future.wait([releases, anilist]);
+  }
+
   Future<AnilistEntity> _getAbrangeResponse({required String title}) async {
     final response = await AnilistUtils.basicResponse(
       title: title,
@@ -31,9 +37,8 @@ class AnilistRepository {
 
   Future<ReleasesAnilistEntity> getReleasesAnimes() async {
     final response = await AnilistUtils.basicResponse(
-      query: Query.releasesQuery(),
+      query: Query.releasesQuery(''),
     );
-
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
       return ReleasesAnilistEntity.toEntity(jsonResponse);
