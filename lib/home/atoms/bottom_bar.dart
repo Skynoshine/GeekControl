@@ -23,8 +23,8 @@ class BottomBarWidget extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.add_chart_rounded),
             onPressed: () {
-              if (currentRouteName != RoutesName.reviews.route) {
-                Navigator.pushNamed(context, RoutesName.reviews.route);
+              if (currentRouteName != RoutesName.noticies.route) {
+                Navigator.pushNamed(context, RoutesName.noticies.route);
               }
             },
           ),

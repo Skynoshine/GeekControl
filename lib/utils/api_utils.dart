@@ -19,21 +19,6 @@ class AnilistUtils {
   }
 }
 
-class TenorApiUtils {
-  static final uri = dotenv.env['URL_TENOR_API'];
-  static final tenorKey = dotenv.env['KEY_TENOR_API'];
-  static final clientKey = dotenv.env['CLIENT_KEY_TENOR_API'];
-  static final urlSearch = dotenv.env['URL_SEARCH_TENOR_API'];
-
-  static Uri basicSearch(String search) {
-    return Uri.parse("$urlSearch$search&$tenorKey$clientKey");
-  }
-
-  static Uri advancedSearch(String search) {
-    return Uri.parse(urlSearch! + search + tenorKey! + clientKey!);
-  }
-
-  static Uri autoComplete(String search) {
-    return Uri.parse("${uri}autocomplete?$tenorKey$clientKey&q=$search");
-  }
+class IntoxiUtils {
+  static final uri = Uri.parse(dotenv.env['INTOXI_URL'].toString());
 }

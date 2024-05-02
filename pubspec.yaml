@@ -46,6 +46,8 @@ dependencies:
   flutter_dotenv: ^5.1.0
   intl: ^0.18.1
   responsive_framework: ^1.4.0
+  html: ^0.15.4
+  webview_flutter: ^4.7.0
 
 dev_dependencies:
   flutter_test:
