@@ -1,11 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/articles/controller/articles_controller.dart';
-import 'package:geekcontrol/articles/entities/noticie_entity.dart';
+import 'package:geekcontrol/articles/entities/articles_entity.dart';
 
 class BannerCarousel extends StatelessWidget {
   final ArticlesController _articlesController = ArticlesController();
-
   BannerCarousel({super.key});
 
   @override

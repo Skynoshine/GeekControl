@@ -1,7 +1,7 @@
-import 'package:geekcontrol/articles/entities/noticie_entity.dart';
+import 'package:geekcontrol/articles/entities/articles_entity.dart';
 import 'package:geekcontrol/services/database/database.dart';
 
-class ArticlesCache {
+class ArticlesCacheDB {
   Future<List<ArticlesEntity>> getArticlesCache(
       {required quantity, required Database db}) async {
     try {
@@ -9,6 +9,7 @@ class ArticlesCache {
       List<ArticlesEntity> articles = articlesCache
           .map((articleMap) => ArticlesEntity.fromMap(articleMap))
           .toList();
+
       return articles;
     } catch (e) {
       throw Exception('Error getting news from cache: $e');

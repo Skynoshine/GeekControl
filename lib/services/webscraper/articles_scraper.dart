@@ -1,4 +1,4 @@
-import 'package:geekcontrol/articles/entities/noticie_entity.dart';
+import 'package:geekcontrol/articles/entities/articles_entity.dart';
 import 'package:geekcontrol/core/utils/api_utils.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;

@@ -51,6 +51,7 @@ dependencies:
   carousel_slider: ^4.2.1
   flutter_cache_manager: ^3.3.2
   mongo_dart: ^0.10.2
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:

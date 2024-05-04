@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/articles/controller/articles_controller.dart';
-import 'package:geekcontrol/articles/entities/noticie_entity.dart';
+import 'package:geekcontrol/articles/entities/articles_entity.dart';
 
 class CompleteArticlePage extends StatelessWidget {
   final ArticlesEntity news;

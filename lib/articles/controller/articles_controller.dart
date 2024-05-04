@@ -1,5 +1,5 @@
-import 'package:geekcontrol/articles/cache/articles_cache.dart';
-import 'package:geekcontrol/articles/entities/noticie_entity.dart';
+import 'package:geekcontrol/services/cache/articles_cache.dart';
+import 'package:geekcontrol/articles/entities/articles_entity.dart';
 import 'package:geekcontrol/services/webscraper/articles_scraper.dart';
 import 'package:geekcontrol/services/database/database.dart';
 
@@ -19,11 +19,11 @@ class ArticlesController {
   }
 
   Future<List<ArticlesEntity>> getArticlesCache({required int quantity}) {
-    return ArticlesCache().getArticlesCache(quantity: quantity, db: _db);
+    return ArticlesCacheDB().getArticlesCache(quantity: quantity, db: _db);
   }
 
   Future<List<ArticlesEntity>> getAllArticlesCache() {
-    return ArticlesCache().getAllArticles(db: _db);
+    return ArticlesCacheDB().getAllArticles(db: _db);
   }
 
   Future<void> _insertNewArticlesToCache(List<ArticlesEntity> articles) async {

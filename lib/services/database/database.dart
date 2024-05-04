@@ -32,6 +32,13 @@ class Database {
     await _close();
   }
 
+  Future<int> size() async {
+    await _connect();
+    final count = await getAll();
+    await _close();
+    return count.length;
+  }
+
   Future<void> insertList(List<Map<String, dynamic>> dataList) async {
     try {
       await _connect();
