@@ -81,13 +81,13 @@ class AnimesCarouselWidget extends StatelessWidget {
                             icon: Icons.remove_red_eye_sharp,
                           ),
                           HitagiText(
-                            text: '${anilist.genres.first} ⚬ ${anilist.genres[1]}',
+                            text:
+                                '${anilist.genres.first} ⚬ ${anilist.genres[1]}',
                             size: 16,
                             icon: Icons.book,
                             isBold: true,
-                            softWrap: true,
                           ),
-                           HitagiText(
+                          HitagiText(
                             text: Utils.timeFromMSeconds(releases.seasonYear),
                             size: 16,
                             icon: Icons.book,

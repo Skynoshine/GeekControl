@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/home/atoms/bottom_bar.dart';
-import 'package:geekcontrol/home/atoms/search_page.dart';
-
+import 'package:geekcontrol/home/components/appbar_home.dart';
+import 'package:geekcontrol/home/components/banner_carrousel.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -9,32 +9,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text("GeekControl"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SearchPage()),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {},
-          ),
-        ],
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: AppBarHome(),
       ),
-      body: const Center(
-        child: Text("Conteúdo Principal"),
-      ),
+      body: BannerCarousel(),
       bottomNavigationBar: const BottomBarWidget(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/core/library/hitagi_cup/search/search_hitagi.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
 import 'package:geekcontrol/repositories/anilist/anilist_repository.dart';
 
 class SearchPage extends StatelessWidget {
@@ -13,12 +13,9 @@ class SearchPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Pesquisar"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: HitagiSearch(
-          repository: AnilistRepository(),
-          textSearch: 'Pesquisar por um mangá',
-          onSearch: (title) => repository!.searchManga(title: title),
+      body: const Center(
+        child: HitagiText(
+          text: 'indisponível',
         ),
       ),
     );

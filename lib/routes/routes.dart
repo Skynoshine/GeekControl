@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekcontrol/home/atoms/animes_carousel.dart';
 import 'package:geekcontrol/home/atoms/search_page.dart';
 import 'package:geekcontrol/home/pages/home_page.dart';
-import 'package:geekcontrol/profile/pages/profile_page.dart';
+import 'package:geekcontrol/articles/pages/articles_page.dart';
 import 'package:geekcontrol/settings_page/pages/settings_page.dart';
 
 enum RoutesName {
@@ -10,7 +10,7 @@ enum RoutesName {
   search,
   settings,
   profile,
-  reviews,
+  noticies,
   animesCarousel,
 }
 
@@ -25,8 +25,8 @@ extension RoutesNameExtension on RoutesName {
         return 'settings';
       case RoutesName.profile:
         return 'profile';
-      case RoutesName.reviews:
-        return 'reviews';
+      case RoutesName.noticies:
+        return 'notices';
       case RoutesName.animesCarousel:
         return 'animesCarousel';
       default:
@@ -40,8 +40,7 @@ class AppRoutes {
     RoutesName.home.route: (_) => const HomePage(),
     RoutesName.search.route: (context) => const SearchPage(),
     RoutesName.settings.route: (context) => const SettingsPage(),
-    RoutesName.profile.route: (context) => const ProfilePage(),
-    RoutesName.reviews.route: (context) => const AnimesCarouselWidget(),
+    RoutesName.noticies.route: (context) => const NoticiesPage(),
     RoutesName.animesCarousel.route: (context) => const AnimesCarouselWidget(),
   };
 
