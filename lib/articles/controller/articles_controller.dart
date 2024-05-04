@@ -1,45 +1,66 @@
 import 'package:geekcontrol/articles/entities/noticie_entity.dart';
 import 'package:geekcontrol/articles/webscraper/articles_scraper.dart';
+import 'package:geekcontrol/database/database_controller.dart';
+import 'package:geekcontrol/utils/api_utils.dart';
 
 class ArticlesController {
   final ArticlesScraper _articlesScraper = ArticlesScraper();
+  final DatabaseController _db = DatabaseController();
 
-  Future<List<ArticlesEntity>> fetchNews(Uri url) async {
+  Future<List<ArticlesEntity>> fetchNews() async {
     try {
-      // Scraping inicial para obter a lista de artigos
-      List<ArticlesEntity> newsList = await _articlesScraper.scrapeNews(url);
+      final List<ArticlesEntity> articles =
+          await _articlesScraper.scrapeNews(IntoxiUtils.uri);
 
-      // Listagem dos detalhes dos artigos para cada artigo na lista
-      List<Future<ArticlesEntity>> detailedArticlesFutures = [];
-      for (var article in newsList) {
-        detailedArticlesFutures.add(fetchArticleDetails(article.url, article));
-      }
-
-      // Aguarde todas as operações de scraping dos detalhes dos artigos
-      List<ArticlesEntity> updatedNewsList = await Future.wait(detailedArticlesFutures);
-
-      return updatedNewsList;
+      await _insertNewArticlesToCache(articles);
+      return articles;
     } catch (e) {
-      print('Error fetching news: $e');
-      return [];
+      throw Exception('Error fetching news: $e');
     }
   }
 
-  Future<ArticlesEntity> fetchArticleDetails(String articleUrl, ArticlesEntity originalArticle) async {
+  Future<void> _insertNewArticlesToCache(List<ArticlesEntity> articles) async {
     try {
-      // Scraping dos detalhes do artigo usando a URL fornecida
-      ArticlesEntity? detailedArticle = await _articlesScraper.scrapeArticleDetails(articleUrl, originalArticle);
+      for (var article in articles) {
+        bool existsInCache = await _db.checkDoubleContent(
+            find: 'title', findObject: article.title);
 
-      if (detailedArticle.imageUrl != null) {
-        return detailedArticle;
-      } else {
-        // Se os detalhes não puderem ser obtidos, retorne o artigo original
-        return originalArticle;
+        if (!existsInCache) {
+          Map<String, dynamic> articleMap = article.toMap();
+
+          // Insert article into cache
+          await _db.insert(articleMap);
+        }
       }
     } catch (e) {
-      print('Error fetching article details: $e');
-      // Em caso de erro, retorne o artigo original
-      return originalArticle;
+      throw Exception('Error inserting articles into cache: $e');
+    }
+  }
+
+  Future<List<ArticlesEntity>> getNewsCache({required int quantity}) async {
+    try {
+      final List<Map<String, dynamic>> articlesCache = await _db.get(quantity);
+      List<ArticlesEntity> articles = articlesCache
+          .map((articleMap) => ArticlesEntity.fromMap(articleMap))
+          .toList();
+      return articles;
+    } catch (e) {
+      throw Exception('Error getting news from cache: $e');
+    }
+  }
+
+  Future<ArticlesEntity> fetchArticleDetails(
+      String articleUrl, ArticlesEntity originalArticle) async {
+    try {
+      await fetchNews();
+      ArticlesEntity detailedArticle = await _articlesScraper
+          .scrapeArticleDetails(articleUrl, originalArticle);
+
+      return detailedArticle.imageUrl != null
+          ? detailedArticle
+          : originalArticle;
+    } catch (e) {
+      throw Exception('Error fetching article details: $e');
     }
   }
 }

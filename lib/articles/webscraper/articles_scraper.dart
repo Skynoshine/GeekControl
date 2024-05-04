@@ -12,42 +12,21 @@ class ArticlesScraper {
         var document = parser.parse(response.body);
         var articles = document.querySelectorAll('article');
 
-        List<ArticlesEntity> newsList = _parseArticles(articles);
-
-        // Atualize cada artigo com os detalhes coletados
         List<Future<ArticlesEntity>> articleDetailsFutures = [];
-        for (var article in newsList) {
-          articleDetailsFutures.add(scrapeArticleDetails(article.url, article));
+        for (var articleElement in articles) {
+          var article = parseArticle(articleElement);
+          if (article != null) {
+            articleDetailsFutures
+                .add(scrapeArticleDetails(article.url, article));
+          }
         }
-
-        // Aguarde todas as operações de scraping dos detalhes dos artigos
-        List<ArticlesEntity> updatedNewsList =
-            await Future.wait(articleDetailsFutures);
-
-        return updatedNewsList;
+        return await Future.wait(articleDetailsFutures);
       } else {
         throw Exception('Failed to load page: ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Error scraping news: $e');
     }
-  }
-
-  List<ArticlesEntity> _parseArticles(List<Element> articles) {
-    List<ArticlesEntity> newsList = [];
-
-    for (var article in articles) {
-      try {
-        var newsArticle = _parseArticle(article);
-        if (newsArticle != null) {
-          newsList.add(newsArticle);
-        }
-      } catch (e) {
-        print('Error parsing article: $e');
-      }
-    }
-
-    return newsList;
   }
 
   Future<ArticlesEntity> scrapeArticleDetails(
@@ -67,7 +46,6 @@ class ArticlesScraper {
             document.querySelector('time.published')?.attributes['datetime'] ??
                 '';
         var contentElements = document.querySelectorAll('.entry p');
-
         var content =
             contentElements.map((element) => element.text.trim()).join('\n');
 
@@ -76,9 +54,9 @@ class ArticlesScraper {
         if (imageUrlElement != null) {
           imageUrl = imageUrlElement.attributes['src'] ?? '';
         } else {
-          // Se a imagem não for encontrada, use a imagem original da ArticlesEntity
-          imageUrl = originalNewsEntity.imageUrl!;
+          imageUrl = originalNewsEntity.imageUrl ?? '';
         }
+
         return ArticlesEntity(
           title: title,
           author: author,
@@ -86,19 +64,21 @@ class ArticlesScraper {
           content: content,
           imageUrl: imageUrl,
           sourceUrl: articleUrl,
-          category: '',
-          url: '',
+          category: originalNewsEntity.category,
+          url: originalNewsEntity.url,
+          createdAt: originalNewsEntity.createdAt,
+          updatedAt: DateTime.now(),
         );
       } else {
         throw Exception(
-            'Falha ao carregar detalhes do artigo: ${response.statusCode}');
+            'Failed to load article details: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Erro ao raspar detalhes do artigo: $e');
+      throw Exception('Error scraping article details: $e');
     }
   }
 
-  ArticlesEntity? _parseArticle(Element article) {
+  ArticlesEntity? parseArticle(Element article) {
     var titleElement = article.querySelector('h2.post-title.entry-title a');
     var imageUrlElement = article.querySelector('.post-thumbnail img');
     var dateElement = article.querySelector('time.published');
@@ -129,9 +109,10 @@ class ArticlesScraper {
         content: content,
         url: articleUrl,
         sourceUrl: '',
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
       );
     }
-
     return null;
   }
 }

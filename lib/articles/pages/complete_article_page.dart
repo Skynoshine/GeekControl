@@ -14,7 +14,7 @@ class CompleteArticlePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Detalhes da Notícia'),
       ),
-      body: FutureBuilder<ArticlesEntity?>(
+      body: FutureBuilder<ArticlesEntity>(
         future: _articlesController.fetchArticleDetails(news.url, news),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -26,74 +26,67 @@ class CompleteArticlePage extends StatelessWidget {
               child: Text('Erro: ${snapshot.error}'),
             );
           } else if (snapshot.hasData) {
-            ArticlesEntity? article = snapshot.data;
-            if (article != null) {
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                          article.imageUrl!,
-                          height: 250,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
+            ArticlesEntity article = snapshot.data!;
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
                         ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        article.imageUrl!,
+                        height: 250,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            article.title,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          article.title,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Por ${article.author} | ${article.date}',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Por ${article.author} | ${article.date}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
                           ),
-                          const SizedBox(height: 16),
-                          Text(
-                            article.content,
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          article.content,
+                          style: const TextStyle(
+                            fontSize: 16,
                           ),
-                 
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-            } else {
-              return const Center(
-                child: Text('Detalhes da notícia não encontrados.'),
-              );
-            }
+                  ),
+                ],
+              ),
+            );
           } else {
             return const Center(
               child: Text('Nenhum dado disponível.'),
