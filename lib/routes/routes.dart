@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekcontrol/home/atoms/animes_carousel.dart';
 import 'package:geekcontrol/home/atoms/search_page.dart';
 import 'package:geekcontrol/home/pages/home_page.dart';
-import 'package:geekcontrol/articles/pages/noticies_page.dart';
+import 'package:geekcontrol/articles/pages/articles_page.dart';
 import 'package:geekcontrol/settings_page/pages/settings_page.dart';
 
 enum RoutesName {
