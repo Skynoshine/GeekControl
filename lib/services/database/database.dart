@@ -1,7 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
-class DatabaseController {
+class Database {
   final Uri _dbUri = Uri.parse(dotenv.env['MONGO_URI']!);
   final String _collection = 'cache-test';
   late Db _db;

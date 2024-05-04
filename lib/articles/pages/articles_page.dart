@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/articles/webscraper/articles_scraper.dart';
+import 'package:geekcontrol/articles/controller/articles_controller.dart';
 import 'package:geekcontrol/articles/entities/noticie_entity.dart';
 import 'package:geekcontrol/articles/pages/complete_article_page.dart';
 
@@ -11,7 +11,7 @@ class NoticiesPage extends StatefulWidget {
 }
 
 class _NoticiesPageState extends State<NoticiesPage> {
-  final ArticlesScraper _newsScraper = ArticlesScraper();
+  final ArticlesController _ct = ArticlesController();
   late Future<List<ArticlesEntity>> _newsFuture;
   late int _newsCount;
   int _newsViewedCount = 0;
@@ -19,7 +19,7 @@ class _NoticiesPageState extends State<NoticiesPage> {
   @override
   void initState() {
     super.initState();
-    _newsFuture = _newsScraper.scrapeNews();
+    _newsFuture = _ct.fetchNews();
     _newsCount = 0;
   }
 

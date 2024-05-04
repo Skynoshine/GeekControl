@@ -1,9 +1,9 @@
 import 'package:geekcontrol/articles/entities/noticie_entity.dart';
-import 'package:geekcontrol/database/database_controller.dart';
+import 'package:geekcontrol/services/database/database.dart';
 
 class ArticlesCache {
   Future<List<ArticlesEntity>> getArticlesCache(
-      {required quantity, required DatabaseController db}) async {
+      {required quantity, required Database db}) async {
     try {
       final List<Map<String, dynamic>> articlesCache = await db.get(quantity);
       List<ArticlesEntity> articles = articlesCache
@@ -15,8 +15,7 @@ class ArticlesCache {
     }
   }
 
-  Future<List<ArticlesEntity>> getAllArticles(
-      {required DatabaseController db}) async {
+  Future<List<ArticlesEntity>> getAllArticles({required Database db}) async {
     try {
       final List<Map<String, dynamic>> articlesCache = await db.getAll();
       List<ArticlesEntity> articles = articlesCache

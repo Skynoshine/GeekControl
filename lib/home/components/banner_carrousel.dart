@@ -19,9 +19,6 @@ class BannerCarousel extends StatelessWidget {
           );
         } else if (snapshot.hasData) {
           List<ArticlesEntity> articles = snapshot.data!;
-          List<String> articleImageUrls =
-              articles.map((article) => article.imageUrl!).toList();
-
           return CarouselSlider(
             options: CarouselOptions(
               height: 200,
@@ -33,57 +30,51 @@ class BannerCarousel extends StatelessWidget {
               enableInfiniteScroll: true,
               viewportFraction: 0.8,
             ),
-            items: articles.asMap().entries.map((entry) {
-              int index = entry.key;
-              ArticlesEntity article = entry.value;
-              String articleUrl = articleImageUrls[index];
-
-              return Builder(
-                builder: (BuildContext context) {
-                  return Stack(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(8.0),
-                          image: DecorationImage(
-                            image: NetworkImage(articleUrl),
-                            fit: BoxFit.cover,
-                          ),
+            items: articles.map((entry) {
+              return Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(8.0),
+                      image: DecorationImage(
+                        image: NetworkImage(entry.imageUrl!),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 7,
+                    left: 2,
+                    right: 2,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width - 20,
+                      padding: const EdgeInsets.all(4.0),
+                      color: Colors.black.withOpacity(0.7),
+                      child: Text(
+                        entry.title,
+                        maxLines: 3,
+                        overflow: TextOverflow.fade,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Positioned(
-                        bottom: 7,
-                        left: 2,
-                        right: 2,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width - 20,
-                          padding: const EdgeInsets.all(4.0),
-                          color: Colors.black.withOpacity(0.7),
-                          child: Text(
-                            article.title,
-                            maxLines: 3,
-                            overflow: TextOverflow.fade,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
+                    ),
+                  ),
+                ],
               );
             }).toList(),
           );
         } else {
-          return Center(
+          return const Center(
             child: Text(
-                _articlesController.getArticlesCache(quantity: 5).toString()),
+              'Nenhum dado disponível',
+              style: TextStyle(color: Colors.red),
+            ),
           );
         }
       },

@@ -1,11 +1,11 @@
 import 'package:geekcontrol/articles/cache/articles_cache.dart';
 import 'package:geekcontrol/articles/entities/noticie_entity.dart';
-import 'package:geekcontrol/articles/webscraper/articles_scraper.dart';
-import 'package:geekcontrol/database/database_controller.dart';
+import 'package:geekcontrol/services/webscraper/articles_scraper.dart';
+import 'package:geekcontrol/services/database/database.dart';
 
 class ArticlesController {
   final ArticlesScraper _articlesScraper = ArticlesScraper();
-  final DatabaseController _db = DatabaseController();
+  final Database _db = Database();
 
   Future<List<ArticlesEntity>> fetchNews() async {
     try {
