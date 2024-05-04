@@ -1,12 +1,13 @@
 import 'package:geekcontrol/articles/entities/noticie_entity.dart';
+import 'package:geekcontrol/utils/api_utils.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
 class ArticlesScraper {
-  Future<List<ArticlesEntity>> scrapeNews(Uri url) async {
+  Future<List<ArticlesEntity>> scrapeNews() async {
     try {
-      var response = await http.get(url);
+      var response = await http.get(IntoxiUtils.uri);
 
       if (response.statusCode == 200) {
         var document = parser.parse(response.body);

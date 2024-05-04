@@ -11,7 +11,7 @@ class BannerCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ArticlesEntity>>(
-      future: _articlesController.getNewsCache(quantity: 10),
+      future: _articlesController.getAllArticlesCache(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -82,8 +82,8 @@ class BannerCarousel extends StatelessWidget {
           );
         } else {
           return Center(
-            child:
-                Text(_articlesController.getNewsCache(quantity: 5).toString()),
+            child: Text(
+                _articlesController.getArticlesCache(quantity: 5).toString()),
           );
         }
       },

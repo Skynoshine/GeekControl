@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:geekcontrol/articles/webscraper/articles_scraper.dart';
 import 'package:geekcontrol/articles/entities/noticie_entity.dart';
 import 'package:geekcontrol/articles/pages/complete_article_page.dart';
-import 'package:geekcontrol/utils/api_utils.dart';
 
 class NoticiesPage extends StatefulWidget {
   const NoticiesPage({Key? key}) : super(key: key);
@@ -20,7 +19,7 @@ class _NoticiesPageState extends State<NoticiesPage> {
   @override
   void initState() {
     super.initState();
-    _newsFuture = _newsScraper.scrapeNews(IntoxiUtils.uri);
+    _newsFuture = _newsScraper.scrapeNews();
     _newsCount = 0;
   }
 

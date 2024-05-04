@@ -57,6 +57,22 @@ class DatabaseController {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getAll() async {
+    try {
+      await _connect();
+      final collection = _db.collection(_collection);
+
+      final response = await collection
+          .find(where.sortBy('date', descending: true))
+          .toList();
+      return response;
+    } catch (e) {
+      throw Exception('Error fetching all data from MongoDB: $e');
+    } finally {
+      await _close();
+    }
+  }
+
   Future<bool> checkDoubleContent({
     required String find,
     required Object findObject,
