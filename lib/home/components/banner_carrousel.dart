@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/articles/controller/articles_controller.dart';
 import 'package:geekcontrol/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/articles/pages/complete_article_page.dart';
 
 class BannerCarousel extends StatelessWidget {
   final ArticlesController _articlesController = ArticlesController();
@@ -30,41 +31,54 @@ class BannerCarousel extends StatelessWidget {
               viewportFraction: 0.8,
             ),
             items: articles.map((entry) {
-              return Stack(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8.0),
-                      image: DecorationImage(
-                        image: NetworkImage(entry.imageUrl!),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+              return GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: CompleteArticlePage(news: entry),
+                      );
+                    },
                   ),
-                  Positioned(
-                    bottom: 7,
-                    left: 2,
-                    right: 2,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 20,
-                      padding: const EdgeInsets.all(4.0),
-                      color: Colors.black.withOpacity(0.7),
-                      child: Text(
-                        entry.title,
-                        maxLines: 3,
-                        overflow: TextOverflow.fade,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                ),
+                child: Stack(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8.0),
+                        image: DecorationImage(
+                          image: NetworkImage(entry.imageUrl!),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Positioned(
+                      bottom: 7,
+                      left: 2,
+                      right: 2,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 20,
+                        padding: const EdgeInsets.all(4.0),
+                        color: Colors.black.withOpacity(0.7),
+                        child: Text(
+                          entry.title,
+                          maxLines: 3,
+                          overflow: TextOverflow.fade,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               );
             }).toList(),
           );
