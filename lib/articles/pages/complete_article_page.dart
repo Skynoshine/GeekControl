@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/articles/controller/articles_controller.dart';
 import 'package:geekcontrol/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/core/utils/loader_indicator.dart';
 
 class CompleteArticlePage extends StatelessWidget {
   final ArticlesEntity news;
   final ArticlesController _articlesController = ArticlesController();
 
-  CompleteArticlePage({Key? key, required this.news}) : super(key: key);
+  CompleteArticlePage({super.key, required this.news});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +19,8 @@ class CompleteArticlePage extends StatelessWidget {
         future: _articlesController.fetchArticleDetails(news.url, news),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: Loader.pacman(),
             );
           } else if (snapshot.hasError) {
             return Center(

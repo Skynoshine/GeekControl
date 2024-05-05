@@ -5,7 +5,7 @@ import 'package:geekcontrol/services/repositories/anilist/anilist_repository.dar
 class SearchPage extends StatelessWidget {
   final AnilistRepository? repository;
   final String title = 'Overlord';
-  const SearchPage({Key? key, this.repository}) : super(key: key);
+  const SearchPage({super.key, this.repository});
 
   @override
   Widget build(BuildContext context) {

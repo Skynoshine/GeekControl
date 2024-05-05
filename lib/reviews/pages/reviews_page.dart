@@ -7,8 +7,7 @@ class ReviewsPage extends StatefulWidget {
   final List<AnilistEntity> mangasAnilist;
 
   const ReviewsPage(
-      {Key? key, required this.reviews, required this.mangasAnilist})
-      : super(key: key);
+      {super.key, required this.reviews, required this.mangasAnilist});
 
   @override
   State<ReviewsPage> createState() => _ReviewsPageState();

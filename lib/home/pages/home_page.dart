@@ -4,7 +4,7 @@ import 'package:geekcontrol/home/components/appbar_home.dart';
 import 'package:geekcontrol/home/components/banner_carrousel.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {

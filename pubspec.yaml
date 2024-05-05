@@ -52,6 +52,10 @@ dependencies:
   flutter_cache_manager: ^3.3.2
   mongo_dart: ^0.10.2
   shared_preferences: ^2.2.3
+  showcaseview: ^2.1.1
+  logger: ^2.2.0
+  skeletonizer: ^1.1.2+1
+  loading_indicator: ^3.1.1
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +66,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

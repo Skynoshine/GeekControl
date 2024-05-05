@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekcontrol/core/routes/routes.dart';
 
 class BottomBarWidget extends StatelessWidget {
-  const BottomBarWidget({Key? key}) : super(key: key);
+  const BottomBarWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

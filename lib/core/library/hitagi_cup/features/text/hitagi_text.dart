@@ -33,7 +33,7 @@ class HitagiText extends StatelessWidget {
   final bool? softWrap;
 
   const HitagiText({
-    Key? key,
+    super.key,
     required this.text,
     this.typography = HitagiTypography.body,
     this.color,
@@ -48,7 +48,7 @@ class HitagiText extends StatelessWidget {
     this.iconSize,
     this.iconPosition = IconPosition.left,
     this.iconColor = Colors.black,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

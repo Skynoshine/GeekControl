@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geekcontrol/articles/controller/articles_controller.dart';
 import 'package:geekcontrol/articles/entities/articles_entity.dart';
 import 'package:geekcontrol/articles/pages/complete_article_page.dart';
+import 'package:geekcontrol/core/utils/loader_indicator.dart';
 
 class BannerCarousel extends StatelessWidget {
   final ArticlesController _articlesController = ArticlesController();
@@ -14,9 +15,7 @@ class BannerCarousel extends StatelessWidget {
       future: _articlesController.getAllArticlesCache(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return Center(child: Loader.pacman());
         } else if (snapshot.hasData) {
           List<ArticlesEntity> articles = snapshot.data!;
           return CarouselSlider(
