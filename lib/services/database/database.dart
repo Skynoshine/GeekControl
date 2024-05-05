@@ -64,6 +64,16 @@ class Database {
     }
   }
 
+  Future<DateTime> getLastUpdate() async {
+    await _connect();
+    final collection = _db.collection(_collection);
+
+    final response = await collection.findOne(
+      where.sortBy('date', descending: true).limit(1),
+    );
+    return DateTime.parse(response!['createdAt']);
+  }
+
   Future<List<Map<String, dynamic>>> getAll() async {
     try {
       await _connect();

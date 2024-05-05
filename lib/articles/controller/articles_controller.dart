@@ -22,7 +22,13 @@ class ArticlesController {
     return ArticlesCacheDB().getArticlesCache(quantity: quantity, db: _db);
   }
 
-  Future<List<ArticlesEntity>> getAllArticlesCache() {
+  Future<List<ArticlesEntity>> getAllArticlesCache() async {
+    DateTime cutOffDate = DateTime.now().subtract(const Duration(minutes: 60));
+    DateTime lastUpdate = await _db.getLastUpdate();
+    int differenceInMinutes = cutOffDate.difference(lastUpdate).inMinutes;
+    if (differenceInMinutes > 60) {
+      return await fetchNews();
+    }
     return ArticlesCacheDB().getAllArticles(db: _db);
   }
 
