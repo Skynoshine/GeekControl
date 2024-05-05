@@ -96,4 +96,17 @@ class HitagiText extends StatelessWidget {
       children: children,
     );
   }
+
+  factory HitagiText.icon(String text, IconData icon,
+      {Color? iconColor,
+      double? iconSize,
+      IconPosition iconPosition = IconPosition.left}) {
+    return HitagiText(
+      text: text,
+      icon: icon,
+      iconPosition: iconPosition,
+      iconColor: iconColor,
+      iconSize: iconSize,
+    );
+  }
 }
