@@ -4,15 +4,15 @@ class ConvertState {
       case 'FINISHED':
         return 'Finalizado';
       case 'RELEASING':
-        return 'Lançamento';
+        return 'Em Lançamento';
       case 'NOT_YET_RELEASED':
-        return 'Não lançado';
+        return 'Ainda Não lançado';
       case 'CANCELLED':
         return 'Cancelado';
       case 'HIATUS':
-        return 'Hiato';
+        return 'Em Hiato';
       default:
-        return 'Desconhecido';
+        return 'Status Desconhecido';
     }
   }
 }
