@@ -7,10 +7,10 @@ import 'package:geekcontrol/settings_page/pages/settings_page.dart';
 
 enum RoutesName {
   home,
+  noticies,
   search,
   settings,
   profile,
-  noticies,
   animesCarousel,
 }
 
@@ -19,16 +19,35 @@ extension RoutesNameExtension on RoutesName {
     switch (this) {
       case RoutesName.home:
         return '/';
+      case RoutesName.noticies:
+        return 'noticies';
       case RoutesName.search:
         return 'search';
       case RoutesName.settings:
         return 'settings';
       case RoutesName.profile:
         return 'profile';
-      case RoutesName.noticies:
-        return 'notices';
       case RoutesName.animesCarousel:
         return 'animesCarousel';
+      default:
+        throw Exception('Rota não encontrada $this');
+    }
+  }
+
+  int get index {
+    switch (this) {
+      case RoutesName.home:
+        return 0;
+      case RoutesName.noticies:
+        return 1;
+      case RoutesName.search:
+        return 2;
+      case RoutesName.settings:
+        return 3;
+      case RoutesName.profile:
+        return 4;
+      case RoutesName.animesCarousel:
+        return 5;
       default:
         throw Exception('Rota não encontrada $this');
     }
@@ -36,21 +55,41 @@ extension RoutesNameExtension on RoutesName {
 }
 
 class AppRoutes {
-  static Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
-    RoutesName.home.route: (_) => const HomePage(),
-    RoutesName.search.route: (context) => const SearchPage(),
-    RoutesName.settings.route: (context) => const SettingsPage(),
-    RoutesName.noticies.route: (context) => const NoticiesPage(),
-    RoutesName.animesCarousel.route: (context) => const AnimesCarouselWidget(),
-  };
+  static List<WidgetBuilder> routes = [
+    (_) => const HomePage(),
+    (_) => const ArticlesPage(),
+    (_) => const SearchPage(),
+    (_) => const SettingsPage(),
+    (_) => const AnimesCarouselWidget(),
+  ];
 
-  static bool isCurrentRoute(BuildContext context, String routeName) {
-    return ModalRoute.of(context)?.settings.name == routeName;
+  static bool _isCurrentRoute(BuildContext context, int routeIndex) {
+    return ModalRoute.of(context)?.settings.name ==
+        RoutesName.values[routeIndex].route;
   }
 
-  static void navigateTo(BuildContext context, String routeName) {
-    if (!isCurrentRoute(context, routeName)) {
-      Navigator.pushNamed(context, routeName);
+  static void navigateTo(BuildContext context, RoutesName routeName) {
+    if (!_isCurrentRoute(context, routeName.index)) {
+      Navigator.pushNamed(context, routeName.route);
     }
+  }
+
+  static void navigateToIndex(BuildContext context, int index) {
+    if (index >= 0 && index < routes.length) {
+      Navigator.push(context, MaterialPageRoute(builder: routes[index]));
+    }
+  }
+
+  Map<String, WidgetBuilder> buildRoutesMap(List<WidgetBuilder> routes) {
+    final Map<String, WidgetBuilder> mappedRoutes = {};
+
+    for (int i = 0; i < routes.length; i++) {
+      final RoutesName routeName = RoutesName.values[i];
+      final String routePath = routeName.route;
+      final WidgetBuilder builder = routes[i];
+      mappedRoutes[routePath] = builder;
+    }
+
+    return mappedRoutes;
   }
 }

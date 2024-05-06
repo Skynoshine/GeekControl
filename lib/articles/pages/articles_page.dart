@@ -5,14 +5,14 @@ import 'package:geekcontrol/articles/pages/complete_article_page.dart';
 import 'package:geekcontrol/core/utils/loader_indicator.dart';
 import 'package:geekcontrol/services/cache/controller/local_cache_controller.dart';
 
-class NoticiesPage extends StatefulWidget {
-  const NoticiesPage({super.key});
+class ArticlesPage extends StatefulWidget {
+  const ArticlesPage({super.key});
 
   @override
-  State<NoticiesPage> createState() => _NoticiesPageState();
+  State<ArticlesPage> createState() => _ArticlesPageState();
 }
 
-class _NoticiesPageState extends State<NoticiesPage> {
+class _ArticlesPageState extends State<ArticlesPage> {
   final ArticlesController _articlesController = ArticlesController();
   final LocalCacheController _cacheController = LocalCacheController();
   late Future<List<ArticlesEntity>> _newsFuture;
