@@ -16,8 +16,8 @@ class BottomBarWidget extends StatelessWidget {
       height: 26,
       items: const [
         TabItem(icon: Icons.home),
-        TabItem(icon: Icons.article),
-        TabItem(icon: Icons.add),
+        TabItem(icon: Icons.newspaper),
+        TabItem(icon: Icons.screen_lock_landscape),
         TabItem(icon: Icons.notifications),
         TabItem(icon: Icons.person),
       ],
