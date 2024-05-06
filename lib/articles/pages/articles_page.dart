@@ -1,52 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/articles/webscraper/articles_scraper.dart';
-import 'package:geekcontrol/articles/entities/noticie_entity.dart';
+import 'package:geekcontrol/articles/controller/articles_controller.dart';
+import 'package:geekcontrol/articles/entities/articles_entity.dart';
 import 'package:geekcontrol/articles/pages/complete_article_page.dart';
+import 'package:geekcontrol/core/utils/loader_indicator.dart';
+import 'package:geekcontrol/services/cache/controller/local_cache_controller.dart';
 
-class NoticiesPage extends StatefulWidget {
-  const NoticiesPage({Key? key}) : super(key: key);
+class ArticlesPage extends StatefulWidget {
+  const ArticlesPage({super.key});
 
   @override
-  State<NoticiesPage> createState() => _NoticiesPageState();
+  State<ArticlesPage> createState() => _ArticlesPageState();
 }
 
-class _NoticiesPageState extends State<NoticiesPage> {
-  final ArticlesScraper _newsScraper = ArticlesScraper();
+class _ArticlesPageState extends State<ArticlesPage> {
+  final ArticlesController _articlesController = ArticlesController();
+  final LocalCacheController _cacheController = LocalCacheController();
   late Future<List<ArticlesEntity>> _newsFuture;
-  late int _newsCount;
+  final List<String> _readTitles = [];
+  final int _newsCount = 0;
   int _newsViewedCount = 0;
 
   @override
   void initState() {
     super.initState();
-    _newsFuture = _newsScraper.scrapeNews();
-    _newsCount = 0;
+    _newsFuture = _articlesController.getAllArticlesCache();
+
+    setState(() {
+      _articlesController.loadCacheReads(
+          _newsCount, _newsViewedCount, _readTitles);
+    });
+  }
+
+  bool _isRead(String title) {
+    return _readTitles.contains(title);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notícias'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                const Icon(Icons.article_outlined),
-                const SizedBox(width: 4),
-                Text('$_newsViewedCount/$_newsCount'),
-              ],
-            ),
-          ),
-        ],
+        toolbarHeight: 35,
+        title: const Text('Últimas Notícias'),
       ),
       body: FutureBuilder<List<ArticlesEntity>>(
         future: _newsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: Loader.pacman(),
             );
           } else if (snapshot.hasError) {
             return Center(
@@ -54,15 +55,21 @@ class _NoticiesPageState extends State<NoticiesPage> {
             );
           } else {
             final newsList = snapshot.data!;
-            _newsCount = newsList.length;
-
             return AnimatedList(
               initialItemCount: newsList.length,
               itemBuilder: (context, index, animation) {
                 final news = newsList[index];
+                final isRead = _isRead(news.title);
 
                 return GestureDetector(
                   onTap: () {
+                    if (!isRead) {
+                      _cacheController.insert(news.title, true, 1);
+                      setState(() {
+                        _readTitles.add(news.title);
+                        _newsViewedCount++;
+                      });
+                    }
                     Navigator.push(
                       context,
                       PageRouteBuilder(
@@ -73,11 +80,16 @@ class _NoticiesPageState extends State<NoticiesPage> {
                           );
                         },
                       ),
-                    ).then((_) {
+                    );
+                  },
+                  onLongPress: () async {
+                    if (isRead) {
+                      await _cacheController.remove(news.title);
                       setState(() {
-                        _newsViewedCount++;
+                        _readTitles.remove(news.title);
+                        _newsViewedCount--;
                       });
-                    });
+                    }
                   },
                   child: SlideTransition(
                     position: Tween<Offset>(
@@ -86,10 +98,23 @@ class _NoticiesPageState extends State<NoticiesPage> {
                     ).animate(animation),
                     child: Card(
                       elevation: 4,
+                      color: isRead
+                          ? const Color.fromARGB(255, 240, 206, 206)
+                          : null,
                       margin: const EdgeInsets.all(8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          if (isRead)
+                            const Padding(
+                              padding: EdgeInsets.all(4.0),
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: Icon(
+                                  Icons.menu_book,
+                                ),
+                              ),
+                            ),
                           Hero(
                             tag: news.imageUrl!,
                             child: ClipRRect(

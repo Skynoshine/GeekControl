@@ -7,12 +7,12 @@ class HitagiSearchDialog extends StatelessWidget {
   final void Function(String)? onSubmitted;
 
   const HitagiSearchDialog({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
     this.onChanged,
     this.onSubmitted,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

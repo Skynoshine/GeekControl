@@ -1,51 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/routes/routes.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:geekcontrol/core/routes/routes.dart';
 
 class BottomBarWidget extends StatelessWidget {
-  const BottomBarWidget({Key? key}) : super(key: key);
+  const BottomBarWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final currentRouteName = ModalRoute.of(context)!.settings.name;
-
-    return BottomAppBar(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.home_outlined),
-            onPressed: () {
-              if (currentRouteName != RoutesName.home.route) {
-                Navigator.pushNamed(context, RoutesName.home.route);
-              }
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.add_chart_rounded),
-            onPressed: () {
-              if (currentRouteName != RoutesName.noticies.route) {
-                Navigator.pushNamed(context, RoutesName.noticies.route);
-              }
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.person_2),
-            onPressed: () {
-              if (currentRouteName != RoutesName.profile.route) {
-                Navigator.pushNamed(context, RoutesName.profile.route);
-              }
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.library_books_rounded),
-            onPressed: () {
-              if (currentRouteName != RoutesName.settings.route) {
-                Navigator.pushNamed(context, RoutesName.settings.route);
-              }
-            },
-          ),
-        ],
-      ),
+    return ConvexAppBar(
+      style: TabStyle.react,
+      initialActiveIndex: 0,
+      backgroundColor: Colors.transparent,
+      activeColor: Colors.black,
+      color: Colors.black,
+      height: 26,
+      items: const [
+        TabItem(icon: Icons.home),
+        TabItem(icon: Icons.article),
+        TabItem(icon: Icons.add),
+        TabItem(icon: Icons.notifications),
+        TabItem(icon: Icons.person),
+      ],
+      onTap: (index) => AppRoutes.navigateToIndex(context, index),
     );
   }
 }

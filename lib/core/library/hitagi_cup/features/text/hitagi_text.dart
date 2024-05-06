@@ -33,7 +33,7 @@ class HitagiText extends StatelessWidget {
   final bool? softWrap;
 
   const HitagiText({
-    Key? key,
+    super.key,
     required this.text,
     this.typography = HitagiTypography.body,
     this.color,
@@ -48,7 +48,7 @@ class HitagiText extends StatelessWidget {
     this.iconSize,
     this.iconPosition = IconPosition.left,
     this.iconColor = Colors.black,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +94,19 @@ class HitagiText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: children,
+    );
+  }
+
+  factory HitagiText.icon(String text, IconData icon,
+      {Color? iconColor,
+      double? iconSize,
+      IconPosition iconPosition = IconPosition.left}) {
+    return HitagiText(
+      text: text,
+      icon: icon,
+      iconPosition: iconPosition,
+      iconColor: iconColor,
+      iconSize: iconSize,
     );
   }
 }

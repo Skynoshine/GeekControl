@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekcontrol/home/atoms/search_page.dart';
 
 class AppBarHome extends StatelessWidget {
-  const AppBarHome({Key? key}) : super(key: key);
+  const AppBarHome({super.key});
 
   @override
   Widget build(BuildContext context) {

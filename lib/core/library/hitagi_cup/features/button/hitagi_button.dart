@@ -26,7 +26,8 @@ class HitagiButton extends TextButton {
           ),
           style: TextButton.styleFrom(
             elevation: elevation,
-            backgroundColor: corButton ?? const Color.fromARGB(188, 241, 145, 145),
+            backgroundColor:
+                corButton ?? const Color.fromARGB(188, 241, 145, 145),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
@@ -67,6 +68,23 @@ class HitagiButton extends TextButton {
               borderRadius: BorderRadius.circular(8.0),
             ),
             padding: padding,
+          ),
+        );
+
+  HitagiButton.text({
+    super.key,
+    required this.label,
+    required super.onPressed,
+    this.corButton,
+    this.corTexto,
+    this.padding = const EdgeInsets.symmetric(horizontal: 32),
+    this.elevation,
+    this.typography = HitagiTypography.button,
+  }) : super(
+          child: HitagiText(
+            text: label,
+            typography: typography,
+            color: corTexto ?? Colors.white,
           ),
         );
 }

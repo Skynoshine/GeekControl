@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/core/library/hitagi_cup/features/button/hitagi_button.dart';
-import 'package:geekcontrol/core/library/hitagi_cup/features/button/hitagi_button_text.dart';
 import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
 
 // ignore: unused_element
@@ -65,8 +64,8 @@ class HitagiDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 onPressedButtonAccept != null
-                    ? HitagiButtonText(
-                        text: 'Não',
+                    ? HitagiButton.text(
+                        label: 'Não',
                         onPressed: onPressedButtonClose ??
                             () => Navigator.pop(context),
                       )

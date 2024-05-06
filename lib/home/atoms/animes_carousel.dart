@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
 import 'package:geekcontrol/core/library/hitagi_cup/utils.dart';
+import 'package:geekcontrol/core/utils/loader_indicator.dart';
 import 'package:geekcontrol/home/components/cover_responsive.dart';
-import 'package:geekcontrol/repositories/anilist/anilist_repository.dart';
-import 'package:geekcontrol/repositories/anilist/entities/manga_anilist_entity.dart';
-import 'package:geekcontrol/repositories/anilist/entities/releases_anilist_entity.dart';
-import 'package:geekcontrol/repositories/anilist/utils/convert_state.dart';
+import 'package:geekcontrol/services/repositories/anilist/anilist_repository.dart';
+import 'package:geekcontrol/services/repositories/anilist/entities/manga_anilist_entity.dart';
+import 'package:geekcontrol/services/repositories/anilist/entities/releases_anilist_entity.dart';
+import 'package:geekcontrol/services/repositories/anilist/utils/convert_state.dart';
 
 class AnimesCarouselWidget extends StatelessWidget {
-  const AnimesCarouselWidget({Key? key}) : super(key: key);
+  const AnimesCarouselWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class AnimesCarouselWidget extends StatelessWidget {
       future: AnilistRepository().fetchAllData(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: Loader.pacman());
         } else {
           final releases = snapshot.data![0] as ReleasesAnilistEntity;
           final anilist = snapshot.data![1] as AnilistEntity;

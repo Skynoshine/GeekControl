@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
 
 class ChangeIconWidget extends StatelessWidget {
-  const ChangeIconWidget({Key? key}) : super(key: key);
+  const ChangeIconWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

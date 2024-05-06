@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:geekcontrol/repositories/anilist/entities/manga_anilist_entity.dart';
-import 'package:geekcontrol/repositories/anilist/entities/releases_anilist_entity.dart';
-import 'package:geekcontrol/repositories/anilist/queries/anilist_query.dart';
-import 'package:geekcontrol/utils/api_utils.dart';
+import 'package:geekcontrol/services/repositories/anilist/entities/manga_anilist_entity.dart';
+import 'package:geekcontrol/services/repositories/anilist/entities/releases_anilist_entity.dart';
+import 'package:geekcontrol/services/repositories/anilist/queries/anilist_query.dart';
+import 'package:geekcontrol/core/utils/api_utils.dart';
 
 class AnilistRepository {
   Future<List<dynamic>> fetchAllData() async {
