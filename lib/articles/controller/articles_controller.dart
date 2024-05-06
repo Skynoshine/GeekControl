@@ -15,7 +15,8 @@ class ArticlesController {
       Loggers.fluxControl(fetchNews, null);
 
       final List<ArticlesEntity> articles = await _articlesScraper.scrapeNews();
-      await _insertNewArticlesToCache(articles);
+      await _insertNewArticlesToCache(
+          articles.map((article) => article.toMap()).toList());
 
       Loggers.fluxControl(fetchNews, 'Fechando');
       return articles;
@@ -31,11 +32,12 @@ class ArticlesController {
   }
 
   Future<bool> _lastUpdate() async {
-    DateTime cutOffDate = DateTime.now().subtract(const Duration(minutes: 60));
+    DateTime cutOffDate = DateTime.now().subtract(const Duration(hours: 1));
     DateTime lastUpdate = await _db.getLastUpdate();
+
     int differenceInMinutes = cutOffDate.difference(lastUpdate).inMinutes;
     Loggers.fluxControl(_lastUpdate, 'Diferença: $differenceInMinutes');
-    return differenceInMinutes < 60;
+    return differenceInMinutes > 60;
   }
 
   Future<List<ArticlesEntity>> getAllArticlesCache() async {
@@ -47,36 +49,20 @@ class ArticlesController {
     return ArticlesCacheDB().getAllArticles(db: _db);
   }
 
- 
-  Future<List<ArticlesEntity>> getArticlesFromCache() async {
-    List cachedItems = await _cacheController.get();
-    List<ArticlesEntity> articles = cachedItems.map((item) {
-      return ArticlesEntity.fromMap(item);
-    }).toList();
-    Loggers.fluxControl(getArticlesFromCache, '$articles');
-    return articles;
-  }
-
-  Future<void> _insertNewArticlesToCache(List<ArticlesEntity> articles) async {
-    Loggers.fluxControl(_insertNewArticlesToCache, null);
-
-    if (await _lastUpdate()) {
-      return;
-    }
-
+  Future<void> _insertNewArticlesToCache(
+      List<Map<String, dynamic>> articles) async {
     try {
-      Map<String, dynamic> articleMap = {};
+      List<String> titlesToCheck =
+          articles.map((article) => article['title'] as String).toList();
+
+      List<String> existingTitles =
+          await _db.checkExistingTitles(titlesToCheck);
 
       for (var article in articles) {
-        bool existsInCache = await _db.checkDoubleContent(
-            find: 'title', findObject: article.title);
-
-        if (!existsInCache) {
-          articleMap = article.toMap();
+        if (!existingTitles.contains(article['title'])) {
+          await _db.insert(article);
         }
       }
-      Loggers.fluxControl(_insertNewArticlesToCache, 'Fechando');
-      return await _db.insert(articleMap);
     } catch (e) {
       throw Exception('Error inserting articles into cache: $e');
     }
@@ -96,15 +82,16 @@ class ArticlesController {
     }
   }
 
-    loadCacheReads(int newsCount, int newsViewedCount, List<String> readTitles) async {
+  void loadCacheReads(
+      int newsCount, int newsViewedCount, List<String> readTitles) async {
     final cachedItems = await _cacheController.get();
-      readTitles = cachedItems.map<String>((item) => item['value']).toList();
+    readTitles = cachedItems.map<String>((item) => item['value']).toList();
 
-      for (var item in cachedItems) {
-        int quantity = item['quantity'];
-        newsCount = quantity;
-      }
-
-      newsViewedCount = readTitles.length;
+    for (var item in cachedItems) {
+      int quantity = item['quantity'];
+      newsCount = quantity;
     }
+
+    newsViewedCount = readTitles.length;
   }
+}

@@ -35,6 +35,7 @@ class Database {
     await _connect();
     Loggers.fluxControl(insert, null);
     await _db.collection(_collection).insert(data);
+
     Loggers.fluxControl(insert, 'Fechando');
     await _close();
   }
@@ -79,6 +80,7 @@ class Database {
 
   Future<DateTime> getLastUpdate() async {
     await _connect();
+
     Loggers.fluxControl(getLastUpdate, null);
     final collection = _db.collection(_collection);
 
@@ -107,19 +109,21 @@ class Database {
     }
   }
 
-  Future<bool> checkDoubleContent({
-    required String find,
-    required Object findObject,
-  }) async {
+  Future<List<String>> checkExistingTitles(List<String> titles) async {
     await _connect();
-    Loggers.fluxControl(checkDoubleContent, null);
-
     var collection = _db.collection(_collection);
-    var result = await collection.findOne({find: findObject});
+
+    var query = {
+      'title': {'\$in': titles}
+    };
+
+    var cursor = await collection.find(query).toList();
+
+    Loggers.fluxControl(checkExistingTitles, cursor.toString());
+
+    var existingTitles = cursor.map((doc) => doc['title'] as String).toList();
 
     await _close();
-    Loggers.fluxControl(checkDoubleContent, 'Fechando');
-
-    return result != null;
+    return existingTitles;
   }
 }
