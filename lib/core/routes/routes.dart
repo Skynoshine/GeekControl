@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/home/atoms/animes_carousel.dart';
 import 'package:geekcontrol/home/atoms/search_page.dart';
 import 'package:geekcontrol/home/pages/home_page.dart';
 import 'package:geekcontrol/articles/pages/articles_page.dart';
+import 'package:geekcontrol/services/anilist/ui/pages/releases_animes_page.dart';
 import 'package:geekcontrol/settings_page/pages/settings_page.dart';
 
 enum RoutesName {
@@ -11,7 +11,7 @@ enum RoutesName {
   search,
   settings,
   profile,
-  animesCarousel,
+  releases,
 }
 
 extension RoutesNameExtension on RoutesName {
@@ -27,8 +27,8 @@ extension RoutesNameExtension on RoutesName {
         return 'settings';
       case RoutesName.profile:
         return 'profile';
-      case RoutesName.animesCarousel:
-        return 'animesCarousel';
+      case RoutesName.releases:
+        return 'releases';
       default:
         throw Exception('Rota não encontrada $this');
     }
@@ -46,7 +46,7 @@ extension RoutesNameExtension on RoutesName {
         return 3;
       case RoutesName.profile:
         return 4;
-      case RoutesName.animesCarousel:
+      case RoutesName.releases:
         return 5;
       default:
         throw Exception('Rota não encontrada $this');
@@ -58,9 +58,9 @@ class AppRoutes {
   static List<WidgetBuilder> routes = [
     (_) => const HomePage(),
     (_) => const ArticlesPage(),
-    (_) => const SearchPage(),
+    (_) => const ReleasesAnimesPage(),
     (_) => const SettingsPage(),
-    (_) => const AnimesCarouselWidget(),
+    (_) => const SearchPage(),
   ];
 
   static bool _isCurrentRoute(BuildContext context, int routeIndex) {
