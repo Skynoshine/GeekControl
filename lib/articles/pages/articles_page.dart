@@ -39,19 +39,8 @@ class _ArticlesPageState extends State<ArticlesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notícias'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                const Icon(Icons.article_outlined),
-                const SizedBox(width: 4),
-                Text('$_newsViewedCount/$_newsCount'),
-              ],
-            ),
-          ),
-        ],
+        toolbarHeight: 35,
+        title: const Text('Últimas Notícias'),
       ),
       body: FutureBuilder<List<ArticlesEntity>>(
         future: _newsFuture,
