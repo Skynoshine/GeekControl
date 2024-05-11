@@ -1,34 +1,48 @@
-import 'package:geekcontrol/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
 import 'package:geekcontrol/core/utils/api_utils.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
 class ArticlesScraper {
-  Future<List<ArticlesEntity>> scrapeNews() async {
-    try {
-      var response = await http.get(IntoxiUtils.uri);
+  Future<List<ArticlesEntity>> scrapeAllNews() async {
+    Set<ArticlesEntity> allArticles = {};
+    final Set<String> processedTitles = {};
+    bool hasMoreContent = true;
 
-      if (response.statusCode == 200) {
-        var document = parser.parse(response.body);
-        var articles = document.querySelectorAll('article');
+    while (hasMoreContent && allArticles.length < 12) {
+      try {
+        var response = await http.get(IntoxiUtils.uri);
 
-        List<Future<ArticlesEntity>> articleDetailsFutures = [];
-        for (var articleElement in articles) {
-          var article = parseArticle(articleElement);
-          if (article != null) {
-            articleDetailsFutures
-                .add(scrapeArticleDetails(article.url, article));
+        if (response.statusCode == 200) {
+          var document = parser.parse(response.body);
+          var articles = document.querySelectorAll('article');
+
+          if (articles.isEmpty) {
+            hasMoreContent = false;
+          } else {
+            for (var articleElement in articles) {
+              var article = _parseArticle(articleElement);
+
+              if (article != null) {
+                if (!processedTitles.contains(article.title)) {
+                  allArticles.add(article);
+                  processedTitles.add(article.title);
+                }
+              }
+            }
           }
+        } else {
+          throw Exception('Failed to load page: ${response.statusCode}');
         }
-        return await Future.wait(articleDetailsFutures);
-      } else {
-        throw Exception('Failed to load page: ${response.statusCode}');
+      } catch (e) {
+        throw Exception('Error scraping news: $e');
       }
-    } catch (e) {
-      throw Exception('Error scraping news: $e');
     }
+
+    return allArticles.toList();
   }
+
 
   Future<ArticlesEntity> scrapeArticleDetails(
       String articleUrl, ArticlesEntity originalNewsEntity) async {
@@ -79,13 +93,14 @@ class ArticlesScraper {
     }
   }
 
-  ArticlesEntity? parseArticle(Element article) {
-    var titleElement = article.querySelector('h2.post-title.entry-title a');
-    var imageUrlElement = article.querySelector('.post-thumbnail img');
-    var dateElement = article.querySelector('time.published');
-    var authorElement = article.querySelector('.post-byline .fn a');
-    var categoryElement = article.querySelector('.post-category a');
-    var contentElement = article.querySelector('.entry p');
+  ArticlesEntity? _parseArticle(Element articleElement) {
+    var titleElement =
+        articleElement.querySelector('h2.post-title.entry-title a');
+    var imageUrlElement = articleElement.querySelector('.post-thumbnail img');
+    var dateElement = articleElement.querySelector('time.published');
+    var authorElement = articleElement.querySelector('.post-byline .fn a');
+    var categoryElement = articleElement.querySelector('.post-category a');
+    var contentElement = articleElement.querySelector('.entry p');
 
     if (titleElement != null &&
         imageUrlElement != null &&
