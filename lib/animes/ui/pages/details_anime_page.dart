@@ -14,7 +14,7 @@ class _DetailsAnimePageState extends State<DetailsAnimePage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => GoRouter.of(context).go('/'),
+          onPressed: () => GoRouter.of(context).go('/releases'),
           icon: const Icon(Icons.arrow_back),
         ),
         title: const Center(child: Text('Details')),
