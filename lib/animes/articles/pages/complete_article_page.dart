@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/articles/controller/articles_controller.dart';
-import 'package:geekcontrol/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/articles/controller/articles_controller.dart';
+import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
 import 'package:geekcontrol/core/utils/loader_indicator.dart';
 
 class CompleteArticlePage extends StatelessWidget {

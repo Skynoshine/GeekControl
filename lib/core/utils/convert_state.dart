@@ -1,31 +1,10 @@
-class ConvertState {
-  static String toPortuguese(String status) {
-    switch (status.toUpperCase()) {
-      case 'FINISHED':
-        return 'Finalizado';
-      case 'RELEASING':
-        return 'Lançamento';
-      case 'NOT_YET_RELEASED':
-        return 'Não lançado';
-      case 'CANCELLED':
-        return 'Cancelado';
-      case 'HIATUS':
-        return 'Hiato';
-      default:
-        return 'Desconhecido';
-    }
-  }
-}
-
 enum MangaStates {
   finished,
   releasing,
   notYetReleased,
   canceled,
-  hiatus,
-}
+  hiatus;
 
-extension ConvertStates on MangaStates {
   String get portuguese {
     switch (this) {
       case MangaStates.finished:
@@ -40,6 +19,23 @@ extension ConvertStates on MangaStates {
         return 'Hiato';
       default:
         return 'Desconhecido';
+    }
+  }
+
+  static String toPortuguese(String status) {
+    switch (status.toUpperCase()) {
+      case 'FINISHED':
+        return 'Finalizado';
+      case 'RELEASING':
+        return 'Em Lançamento';
+      case 'NOT_YET_RELEASED':
+        return 'Ainda Não lançado';
+      case 'CANCELLED':
+        return 'Cancelado';
+      case 'HIATUS':
+        return 'Em Hiato';
+      default:
+        return 'Status Desconhecido';
     }
   }
 }

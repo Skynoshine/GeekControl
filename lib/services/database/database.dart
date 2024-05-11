@@ -1,5 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geekcontrol/core/utils/logger.dart';
+import 'package:logger/logger.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 class Database {
@@ -40,26 +41,6 @@ class Database {
     await _close();
   }
 
-  Future<int> size() async {
-    Loggers.fluxControl(size, null);
-    await _connect();
-    final count = await getAll();
-    await _close();
-    Loggers.fluxControl(size, 'Fechando');
-    return count.length;
-  }
-
-  Future<void> insertList(List<Map<String, dynamic>> dataList) async {
-    Loggers.fluxControl(insertList, null);
-    try {
-      await _connect();
-      await _db.collection(_collection).insertAll(dataList);
-    } finally {
-      Loggers.fluxControl(insertList, 'Fechando');
-      await _close();
-    }
-  }
-
   Future<List<Map<String, dynamic>>> get(int quantity) async {
     Loggers.fluxControl(get, null);
     try {
@@ -88,7 +69,7 @@ class Database {
       where.sortBy('date', descending: true).limit(1),
     );
     await _close();
-    return DateTime.parse(response!['createdAt']);
+    return DateTime.parse(response?['createdAt'] ?? '0000-00-00');
   }
 
   Future<List<Map<String, dynamic>>> getAll() async {
@@ -109,21 +90,25 @@ class Database {
     }
   }
 
-  Future<List<String>> checkExistingTitles(List<String> titles) async {
+  Future<List> checkExistingTitles(List<String> titles) async {
     await _connect();
-    var collection = _db.collection(_collection);
 
-    var query = {
-      'title': {'\$in': titles}
-    };
+    try {
+      var collection = _db.collection(_collection);
 
-    var cursor = await collection.find(query).toList();
+      var query = {
+        'title': {'\$in': titles}
+      };
 
-    Loggers.fluxControl(checkExistingTitles, cursor.toString());
+      final List<Map<String, dynamic>> existingTitles =
+          await collection.find(query).toList();
 
-    var existingTitles = cursor.map((doc) => doc['title'] as String).toList();
-
-    await _close();
-    return existingTitles;
+      Loggers().log(Logger.level, 'Existentes: $existingTitles');
+      return existingTitles;
+    } catch (e) {
+      throw Exception('Error fetching data from MongoDB: $e');
+    } finally {
+      await _close();
+    }
   }
 }

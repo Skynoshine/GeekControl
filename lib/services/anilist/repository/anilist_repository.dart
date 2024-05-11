@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:geekcontrol/services/repositories/anilist/entities/manga_anilist_entity.dart';
-import 'package:geekcontrol/services/repositories/anilist/entities/releases_anilist_entity.dart';
-import 'package:geekcontrol/services/repositories/anilist/queries/anilist_query.dart';
+import 'package:geekcontrol/services/anilist/entities/manga_anilist_entity.dart';
+import 'package:geekcontrol/services/anilist/entities/releases_anilist_entity.dart';
+import 'package:geekcontrol/services/anilist/queries/anilist_query.dart';
 import 'package:geekcontrol/core/utils/api_utils.dart';
 
 class AnilistRepository {
@@ -35,15 +35,15 @@ class AnilistRepository {
     return await _getData(title: title);
   }
 
-  Future<ReleasesAnilistEntity> getReleasesAnimes() async {
+  Future<List<ReleasesAnilistEntity>> getReleasesAnimes() async {
     final response = await AnilistUtils.basicResponse(
       query: Query.releasesQuery(''),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      return ReleasesAnilistEntity.toEntity(jsonResponse);
+      return ReleasesAnilistEntity.toEntityList(jsonResponse);
     } else {
-      return ReleasesAnilistEntity.empty();
+      return [ReleasesAnilistEntity.empty()];
     }
   }
 }

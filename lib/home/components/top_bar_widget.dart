@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/home/atoms/search_page.dart';
 
-class AppBarHome extends StatelessWidget {
-  const AppBarHome({super.key});
+class TopBarWidget extends StatelessWidget {
+  const TopBarWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -21,4 +21,5 @@ class AnilistUtils {
 
 class IntoxiUtils {
   static final uri = Uri.parse(dotenv.env['INTOXI_URL'].toString());
+  static final spoilers = Uri.parse(dotenv.env['SPOILERS_URL'].toString());
 }

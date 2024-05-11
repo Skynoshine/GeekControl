@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:geekcontrol/core/routes/routes.dart';
+import 'package:go_router/go_router.dart';
 
 class BottomBarWidget extends StatelessWidget {
   const BottomBarWidget({super.key});
@@ -16,12 +16,30 @@ class BottomBarWidget extends StatelessWidget {
       height: 26,
       items: const [
         TabItem(icon: Icons.home),
+        TabItem(icon: Icons.newspaper),
+        TabItem(icon: Icons.new_releases),
         TabItem(icon: Icons.article),
-        TabItem(icon: Icons.add),
-        TabItem(icon: Icons.notifications),
         TabItem(icon: Icons.person),
       ],
-      onTap: (index) => AppRoutes.navigateToIndex(context, index),
+      onTap: (index) => GoRouter.of(context).go(routesIndex(index)),
     );
+  }
+
+  routesIndex(int index) {
+    switch (index) {
+      case 0:
+        return '/';
+      case 1:
+        return '/articles';
+      case 2:
+        return '/releases';
+      case 3:
+        return '/spoilers';
+      case 4:
+        return 'search';
+      case 5:
+        return 'animeDetails';
+      default:
+    }
   }
 }

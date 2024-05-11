@@ -1,4 +1,4 @@
-import 'package:geekcontrol/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
 import 'package:geekcontrol/core/utils/logger.dart';
 import 'package:geekcontrol/services/database/database.dart';
 

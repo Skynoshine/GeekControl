@@ -1,20 +1,27 @@
 import 'dart:convert';
-import 'package:geekcontrol/services/cache/entity/articles_cache_entity.dart';
+import 'package:geekcontrol/services/cache/keys_enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalCache {
-  static const String cacheKey = 'local-cache';
-
-  Future<void> insert(ArticlesCacheEntity data) async {
+  Future<void> insertEntity(dynamic data, String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> cacheList = prefs.getStringList(cacheKey) ?? [];
+    List<String> cacheList = prefs.getStringList(CacheKeys.articles.name) ?? [];
     cacheList.add(json.encode(data.toMap()));
-    await prefs.setStringList(cacheKey, cacheList);
+    await prefs.setStringList(CacheKeys.articles.name, cacheList);
+  }
+
+  Future<void> insertReader(String key, dynamic object) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> cacheList =
+        prefs.getStringList(CacheKeys.articles.name) ?? [];
+
+    cacheList.add(object);
+    await prefs.setStringList(key, cacheList);
   }
 
   Future<void> remove(String title) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? cachedStrings = prefs.getStringList(LocalCache.cacheKey);
+    List<String>? cachedStrings = prefs.getStringList(CacheKeys.articles.name);
 
     if (cachedStrings == null) return;
 
@@ -25,21 +32,22 @@ class LocalCache {
     List<String> updatedCachedStrings =
         cacheList.map((item) => json.encode(item)).toList();
 
-    await prefs.setStringList(LocalCache.cacheKey, updatedCachedStrings);
+    await prefs.setStringList(CacheKeys.articles.name, updatedCachedStrings);
   }
 
   Future clearCache() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? cachedStrings = prefs.getStringList(cacheKey);
+    List<String>? cachedStrings = prefs.getStringList(CacheKeys.articles.name);
 
     if (cachedStrings == null) return;
 
     await prefs.clear();
   }
-  
-  Future<List> get({required String? key}) async {
+
+  Future<List> get({required String key}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? cachedStrings = prefs.getStringList(key ?? cacheKey);
+    List<String>? cachedStrings =
+        prefs.getStringList(key);
     if (cachedStrings == null || cachedStrings.isEmpty) {
       return [];
     }

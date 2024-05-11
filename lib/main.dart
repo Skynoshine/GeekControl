@@ -19,15 +19,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
-      routes: AppRoutes().buildRoutesMap(AppRoutes.routes),
+      routerDelegate: AppRoutes.router.routerDelegate,
+      routeInformationParser: AppRoutes.router.routeInformationParser,
+      routeInformationProvider: AppRoutes.router.routeInformationProvider,
     );
   }
 }
