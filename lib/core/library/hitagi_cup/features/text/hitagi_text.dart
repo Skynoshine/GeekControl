@@ -103,7 +103,7 @@ class HitagiText extends StatelessWidget {
     Color? iconColor,
     double? iconSize,
     double size = 15,
-    HitagiTypography typography = HitagiTypography.title,
+    HitagiTypography typography = HitagiTypography.body,
     IconPosition iconPosition = IconPosition.left,
   }) {
     return HitagiText(
