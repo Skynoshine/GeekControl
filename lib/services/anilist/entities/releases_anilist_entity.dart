@@ -1,3 +1,6 @@
+import 'package:geekcontrol/core/utils/convert_state.dart';
+import 'package:geekcontrol/core/utils/entity_mappers.dart';
+
 class ReleasesAnilistEntity {
   final int id;
   final int episodeId;
@@ -5,13 +8,15 @@ class ReleasesAnilistEntity {
   final String bannerImage;
   final String coverImage;
   final int episodes;
+  final int? actuallyEpisode;
   final int updatedAt;
   final String status;
   final String season;
   final int seasonYear;
   final String author;
   final String artist;
-  final Map<String, dynamic>? nextAiringEpisode;
+  final int? nextEpisode;
+  final int airingAt;
   final Map<String, dynamic> startDate;
   final Map<String, dynamic>? endDate;
 
@@ -26,36 +31,46 @@ class ReleasesAnilistEntity {
     required this.status,
     required this.season,
     required this.seasonYear,
-    required this.nextAiringEpisode,
     required this.startDate,
     required this.endDate,
     required this.author,
     required this.artist,
+    required this.nextEpisode,
+    required this.airingAt,
+    required this.actuallyEpisode,
   });
 
-  factory ReleasesAnilistEntity.toEntity(Map<String, dynamic> json) {
-    final Map<String, dynamic> path = json['data']['Page']['media'][0];
-    return ReleasesAnilistEntity(
-      id: path['id'],
-      englishTitle: path['title']['english'],
-      episodes: path['episodes'],
-      updatedAt: path['updatedAt'],
-      status: path['status'],
-      season: path['season'],
-      seasonYear: path['seasonYear'],
-      startDate: path['startDate'],
-      endDate: path['endDate'] ?? {},
-      bannerImage: path['bannerImage'],
-      coverImage: path['coverImage']['extraLarge'],
-      nextAiringEpisode: path['nextAiringEpisode'] ?? {},
-      episodeId: path['id'],
-      author: path['staff']['edges'][0]['node']['name']['full'],
-      artist: path['staff']['edges'][1]['node']['name']['full'],
-    );
+  static List<ReleasesAnilistEntity> toEntityList(Map<String, dynamic> json) {
+    final List<dynamic> mediaList = json['data']['Page']['media'];
+    List<ReleasesAnilistEntity> entities = mediaList.map((media) {
+      return ReleasesAnilistEntity(
+        id: media['id'],
+        episodeId: media['id'],
+        englishTitle: media['title']?['english'] ?? '',
+        episodes: media['episodes'] ?? 0,
+        updatedAt: media['updatedAt'] ?? 0,
+        status: MangaStates.toPortuguese(media['status'] ?? ''),
+        season: media['season'] ?? '',
+        seasonYear: media['seasonYear'] ?? 0,
+        startDate: media['startDate'] ?? {},
+        endDate: media['endDate'] ?? {},
+        bannerImage: media['bannerImage'] ?? media['coverImage']['extraLarge'],
+        coverImage: media['coverImage']['extraLarge'] ?? '',
+        author:
+            EntityMappers.roleEntity(media)?['node']?['name']?['full'] ?? 'N/A',
+        artist: '',
+        nextEpisode: media['nextAiringEpisode']?['episode'] ?? 0,
+        airingAt: media['nextAiringEpisode']?['airingAt'] ?? 0,
+        actuallyEpisode: EntityMappers.episodes(media),
+      );
+    }).toList();
+    return entities;
   }
 
   ReleasesAnilistEntity.empty()
       : id = 0,
+        nextEpisode = 0,
+        airingAt = 0,
         episodeId = 0,
         englishTitle = '',
         bannerImage = '',
@@ -65,40 +80,9 @@ class ReleasesAnilistEntity {
         status = '',
         season = '',
         seasonYear = 0,
-        nextAiringEpisode = {},
         startDate = {},
         author = '',
         artist = '',
+        actuallyEpisode = 0,
         endDate = {};
-}
-
-class AiringSchedule {
-  final int episodeAiring;
-  final int episodeId;
-  final String episodeBanner;
-  final String episodeCover;
-
-  AiringSchedule({
-    required this.episodeAiring,
-    required this.episodeId,
-    required this.episodeBanner,
-    required this.episodeCover,
-  });
-
-  factory AiringSchedule.fromJson(Map<String, dynamic> json) {
-    final Map<String, dynamic> path = json['Page']['media'];
-    final Map<String, dynamic> airing = path['airingSchedule']['nodes'];
-    return AiringSchedule(
-      episodeAiring: airing['episode'],
-      episodeId: json['id'],
-      episodeBanner: json['bannerImage'],
-      episodeCover: json['coverImage']['extraLarge'],
-    );
-  }
-
-  AiringSchedule.empty()
-      : episodeAiring = 0,
-        episodeId = 0,
-        episodeBanner = '',
-        episodeCover = '';
 }

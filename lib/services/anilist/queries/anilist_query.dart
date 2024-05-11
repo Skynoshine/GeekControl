@@ -61,19 +61,6 @@ class Query {
       coverImage {
         extraLarge
       }
-      airingSchedule(notYetAired: true, perPage: 1) {
-        nodes {
-          episode
-          id
-          media {
-            id
-            bannerImage
-            coverImage {
-              extraLarge
-            }
-          }
-        }
-      }
       title {
         romaji
         english
@@ -86,6 +73,8 @@ class Query {
       episodes
       nextAiringEpisode {
         id
+        airingAt
+        episode
       }
       startDate {
         year

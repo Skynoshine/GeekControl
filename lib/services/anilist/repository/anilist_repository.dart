@@ -35,15 +35,15 @@ class AnilistRepository {
     return await _getData(title: title);
   }
 
-  Future<ReleasesAnilistEntity> getReleasesAnimes() async {
+  Future<List<ReleasesAnilistEntity>> getReleasesAnimes() async {
     final response = await AnilistUtils.basicResponse(
       query: Query.releasesQuery(''),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      return ReleasesAnilistEntity.toEntity(jsonResponse);
+      return ReleasesAnilistEntity.toEntityList(jsonResponse);
     } else {
-      return ReleasesAnilistEntity.empty();
+      return [ReleasesAnilistEntity.empty()];
     }
   }
 }
