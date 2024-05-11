@@ -1,7 +1,8 @@
 import 'package:geekcontrol/core/utils/logger.dart';
 import 'package:geekcontrol/services/cache/articles_cache.dart';
-import 'package:geekcontrol/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
 import 'package:geekcontrol/services/cache/controller/local_cache_controller.dart';
+import 'package:geekcontrol/services/cache/keys_enum.dart';
 import 'package:geekcontrol/services/webscraper/articles_scraper.dart';
 import 'package:geekcontrol/services/database/database.dart';
 
@@ -14,15 +15,19 @@ class ArticlesController {
     try {
       Loggers.fluxControl(fetchNews, null);
 
-      final List<ArticlesEntity> articles = await _articlesScraper.scrapeNews();
-      await _insertNewArticlesToCache(
-          articles.map((article) => article.toMap()).toList());
+      final List<ArticlesEntity> articles =
+          await _articlesScraper.scrapeAllNews();
+      //await _insertNewArticlesToCache(
+      //  articles.map((article) => article.toMap()).toList());
 
-      Loggers.fluxControl(fetchNews, 'Fechando');
       return articles;
     } catch (e) {
       throw Exception('Error fetching news: $e');
     }
+  }
+
+  bool loadMore(bool load) {
+    return load;
   }
 
   Future<List<ArticlesEntity>> getArticlesCache({required int quantity}) {
@@ -42,11 +47,8 @@ class ArticlesController {
 
   Future<List<ArticlesEntity>> getAllArticlesCache() async {
     Loggers.fluxControl(getAllArticlesCache, null);
-
-    if (await _lastUpdate() == true) {
-      return await fetchNews();
-    }
-    return ArticlesCacheDB().getAllArticles(db: _db);
+    //return ArticlesCacheDB().getAllArticles(db: _db);
+    return fetchNews();
   }
 
   Future<void> _insertNewArticlesToCache(
@@ -55,8 +57,7 @@ class ArticlesController {
       List<String> titlesToCheck =
           articles.map((article) => article['title'] as String).toList();
 
-      List<String> existingTitles =
-          await _db.checkExistingTitles(titlesToCheck);
+      List existingTitles = await _db.checkExistingTitles(titlesToCheck);
 
       for (var article in articles) {
         if (!existingTitles.contains(article['title'])) {
@@ -84,7 +85,8 @@ class ArticlesController {
 
   void loadCacheReads(
       int newsCount, int newsViewedCount, List<String> readTitles) async {
-    final cachedItems = await _cacheController.get();
+    final cachedItems =
+        await _cacheController.get(key: CacheKeys.articles.name);
     readTitles = cachedItems.map<String>((item) => item['value']).toList();
 
     for (var item in cachedItems) {
