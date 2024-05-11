@@ -73,7 +73,7 @@ class AnimesCarouselWidget extends StatelessWidget {
                             iconColor: const Color.fromARGB(255, 223, 201, 4),
                           ),
                           HitagiText(
-                            text: ConvertState.toPortuguese(
+                            text: MangaStates.toPortuguese(
                                 anilist.review.first.status),
                             typography: HitagiTypography.title,
                             icon: Icons.remove_red_eye_sharp,
