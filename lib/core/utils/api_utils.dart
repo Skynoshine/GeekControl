@@ -23,3 +23,20 @@ class IntoxiUtils {
   static final uri = Uri.parse(dotenv.env['INTOXI_URL'].toString());
   static final spoilers = Uri.parse(dotenv.env['SPOILERS_URL'].toString());
 }
+
+class AnimesNewUtils {
+  static final uri = Uri.parse(dotenv.env['ANIMESNEW_URL'].toString());
+  static final uriStr = dotenv.env['ANIMESNEW_URL'].toString();
+}
+
+class Scrap {
+  static String xPathToSelect(String url) {
+    if (url.contains('/')) url = url.replaceFirst('/', '');
+    if (url.contains('/')) url = url.replaceAll('/', ' > ');
+    for (var i = 0; i < 30; i++) {
+      if (url.contains('[$i]')) url = url.replaceAll('[$i]', '');
+    }
+
+    return url;
+  }
+}

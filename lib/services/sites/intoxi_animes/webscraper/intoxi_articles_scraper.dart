@@ -1,10 +1,12 @@
 import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/sites_enum.dart';
 import 'package:geekcontrol/core/utils/api_utils.dart';
+import 'package:geekcontrol/services/sites/utils_scrap.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
-class ArticlesScraper {
+class IntoxiArticles {
   Future<List<ArticlesEntity>> scrapeAllNews() async {
     Set<ArticlesEntity> allArticles = {};
     final Set<String> processedTitles = {};
@@ -15,8 +17,8 @@ class ArticlesScraper {
         var response = await http.get(IntoxiUtils.uri);
 
         if (response.statusCode == 200) {
-          var document = parser.parse(response.body);
-          var articles = document.querySelectorAll('article');
+          final doc = parser.parse(response.body);
+          final articles = doc.querySelectorAll('article');
 
           if (articles.isEmpty) {
             hasMoreContent = false;
@@ -39,10 +41,51 @@ class ArticlesScraper {
         throw Exception('Error scraping news: $e');
       }
     }
-
     return allArticles.toList();
   }
 
+  Future<List<ArticlesEntity>> scrapeLimitedNews(int maxArticles) async {
+    Set<ArticlesEntity> allArticles = {};
+    final Set<String> processedTitles = {};
+    bool hasMoreContent = true;
+    int fetchedArticles = 0;
+
+    while (hasMoreContent && fetchedArticles < maxArticles) {
+      try {
+        var response = await http.get(IntoxiUtils.uri);
+
+        if (response.statusCode == 200) {
+          var document = parser.parse(response.body);
+          var articles = document.querySelectorAll('article');
+
+          if (articles.isEmpty) {
+            hasMoreContent = false;
+          } else {
+            for (var articleElement in articles) {
+              var article = _parseArticle(articleElement);
+
+              if (article != null) {
+                if (!processedTitles.contains(article.title)) {
+                  allArticles.add(article);
+                  processedTitles.add(article.title);
+                  fetchedArticles++;
+                  if (fetchedArticles >= maxArticles) {
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        } else {
+          throw Exception('Failed to load page: ${response.statusCode}');
+        }
+      } catch (e) {
+        throw Exception('Error scraping news: $e');
+      }
+    }
+
+    return allArticles.toList();
+  }
 
   Future<ArticlesEntity> scrapeArticleDetails(
       String articleUrl, ArticlesEntity originalNewsEntity) async {
@@ -50,39 +93,35 @@ class ArticlesScraper {
       var response = await http.get(Uri.parse(articleUrl));
 
       if (response.statusCode == 200) {
-        var document = parser.parse(response.body);
+        var doc = parser.parse(response.body);
 
-        var title =
-            document.querySelector('h1.post-title.entry-title')?.text.trim() ??
-                '';
-        var author =
-            document.querySelector('.post-byline .fn a')?.text.trim() ?? '';
-        var date =
-            document.querySelector('time.published')?.attributes['datetime'] ??
-                '';
-        var contentElements = document.querySelectorAll('.entry p');
-        var content =
-            contentElements.map((element) => element.text.trim()).join('\n');
+        final title = Scraper.docSelec(doc, 'h1.post-title.entry-title');
+        final author = Scraper.docSelec(doc, '.post-byline .fn a');
+        final date = Scraper.docSelecAttr(doc, 'time.published', 'datetime');
+        final content = Scraper.docSelecAll(doc, '.entry p', '');
+        var imageUrl = Scraper.docSelecAttr(doc, '.entry-inner img', 'src');
 
-        var imageUrl = '';
-        var imageUrlElement = document.querySelector('.post-thumbnail img');
-        if (imageUrlElement != null) {
-          imageUrl = imageUrlElement.attributes['src'] ?? '';
-        } else {
-          imageUrl = originalNewsEntity.imageUrl ?? '';
-        }
+        Scraper.removeHtmlElementsList(content, [
+          'twitter',
+          '@',
+          'Relacionado',
+          'Staff',
+          'Visual liberado junto do trailer'
+        ]);
 
         return ArticlesEntity(
           title: title,
           author: author,
           date: date,
-          content: content,
-          imageUrl: imageUrl,
-          sourceUrl: articleUrl,
+          content: content.join('\n'),
+          imageUrl: imageUrl != 'NA' ? imageUrl : originalNewsEntity.imageUrl,
+          resume: '',
+          sourceUrl: originalNewsEntity.url,
           category: originalNewsEntity.category,
           url: originalNewsEntity.url,
           createdAt: originalNewsEntity.createdAt,
           updatedAt: DateTime.now(),
+          site: SitesEnum.intoxi.name,
         );
       } else {
         throw Exception(
@@ -123,8 +162,10 @@ class ArticlesScraper {
         author: author,
         category: category,
         content: content,
+        resume: '',
         url: articleUrl,
         sourceUrl: '',
+        site: SitesEnum.intoxi.name,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/animes/articles/controller/articles_controller.dart';
 import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/articles/pages/components/carousel_articles.dart';
 import 'package:geekcontrol/core/utils/loader_indicator.dart';
 
 class CompleteArticlePage extends StatelessWidget {
   final ArticlesEntity news;
+  final String current;
   final ArticlesController _articlesController = ArticlesController();
 
-  CompleteArticlePage({super.key, required this.news});
+  CompleteArticlePage({super.key, required this.news, required this.current});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,11 @@ class CompleteArticlePage extends StatelessWidget {
         title: const Text('Detalhes da Notícia'),
       ),
       body: FutureBuilder<ArticlesEntity>(
-        future: _articlesController.fetchArticleDetails(news.url, news),
+        future: _articlesController.fetchArticleDetails(
+          news.sourceUrl!.isEmpty ? news.url : news.sourceUrl!,
+          news,
+          news.site,
+        ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -32,42 +38,17 @@ class CompleteArticlePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        article.imageUrl!,
-                        height: 250,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  article.imagesPage != null
+                      ? CarouselArticles(
+                          images: article.imagesPage!, title: article.title)
+                      : CarouselArticles(
+                          images: [article.imageUrl!], title: article.title),
                   const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          article.title,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
                         Text(
                           'Por ${article.author} | ${article.date}',
                           style: TextStyle(
@@ -82,6 +63,7 @@ class CompleteArticlePage extends StatelessWidget {
                             fontSize: 16,
                           ),
                         ),
+                        const SizedBox(height: 4),
                       ],
                     ),
                   ),

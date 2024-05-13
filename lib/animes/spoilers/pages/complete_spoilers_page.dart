@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/animes/spoilers/entities/spoiler_entity.dart';
-import 'package:geekcontrol/services/webscraper/spoilers_scraper.dart';
+import 'package:geekcontrol/services/sites/intoxi_animes/webscraper/spoilers_scraper.dart';
 import 'package:logger/logger.dart';
 
 class SpoilersDetailPage extends StatefulWidget {

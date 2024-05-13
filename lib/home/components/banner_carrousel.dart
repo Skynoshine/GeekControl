@@ -6,14 +6,12 @@ import 'package:geekcontrol/animes/articles/pages/complete_article_page.dart';
 import 'package:geekcontrol/core/utils/loader_indicator.dart';
 
 class BannerCarousel extends StatelessWidget {
-  BannerCarousel({super.key});
-
-  final ArticlesController _articlesController = ArticlesController();
+  const BannerCarousel({super.key});
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ArticlesEntity>>(
-      future: _articlesController.getAllArticlesCache(),
+      future: ArticlesController().bannerNews(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: Loader.pacman());
@@ -38,7 +36,7 @@ class BannerCarousel extends StatelessWidget {
                     pageBuilder: (context, animation, secondaryAnimation) {
                       return FadeTransition(
                         opacity: animation,
-                        child: CompleteArticlePage(news: entry),
+                        child: CompleteArticlePage(news: entry, current: entry.site),
                       );
                     },
                   ),
