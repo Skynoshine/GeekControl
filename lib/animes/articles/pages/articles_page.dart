@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:geekcontrol/animes/articles/controller/articles_controller.dart';
 import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
 import 'package:geekcontrol/animes/articles/pages/complete_article_page.dart';
+import 'package:geekcontrol/animes/components/floating_button.dart';
+import 'package:geekcontrol/animes/sites_enum.dart';
 import 'package:geekcontrol/core/utils/loader_indicator.dart';
-import 'package:geekcontrol/services/cache/controller/local_cache_controller.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 
 class ArticlesPage extends StatefulWidget {
   const ArticlesPage({super.key});
@@ -14,20 +16,17 @@ class ArticlesPage extends StatefulWidget {
 }
 
 class _ArticlesPageState extends State<ArticlesPage> {
-  final ArticlesController _articlesController = ArticlesController();
-  final LocalCacheController _cacheController = LocalCacheController();
-  late Future<List<ArticlesEntity>> _newsFuture;
   final List<String> _readTitles = [];
-  final int _newsCount = 0;
-  int _newsViewedCount = 0;
+  ArticlesController ct = ArticlesController();
 
   @override
   void initState() {
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => ct.changedSite(SitesEnum.intoxi));
+    ct.addListener(() {
+      setState(() {});
+    });
     super.initState();
-    _newsFuture = _articlesController.getAllArticlesCache();
-
-    _articlesController.loadCacheReads(
-        _newsCount, _newsViewedCount, _readTitles);
   }
 
   bool _isRead(String title) {
@@ -43,8 +42,9 @@ class _ArticlesPageState extends State<ArticlesPage> {
             icon: const Icon(Icons.arrow_back)),
         title: const Center(child: Text('Últimas Notícias')),
       ),
+      floatingActionButton: FloattingButton(ct: ct),
       body: FutureBuilder<List<ArticlesEntity>>(
-        future: _newsFuture,
+        future: ct.articles,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -60,7 +60,7 @@ class _ArticlesPageState extends State<ArticlesPage> {
               onNotification: (scrollNotification) {
                 if (scrollNotification is ScrollEndNotification &&
                     scrollNotification.metrics.extentAfter == 0) {
-                  print('Usuário chegou ao final da tela!');
+                  Logger().d('Carregando mais notícias...');
                 }
                 return false;
               },
@@ -69,38 +69,18 @@ class _ArticlesPageState extends State<ArticlesPage> {
                 itemBuilder: (context, index, animation) {
                   final news = newsList[index];
                   final isRead = _isRead(news.title);
-
                   return GestureDetector(
-                    onTap: () {
-                      if (!isRead) {
-                        _cacheController.insertEntity(news.title, true, 1);
-                        setState(() {
-                          _readTitles.add(news.title);
-                          _newsViewedCount++;
-                        });
-                      }
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: CompleteArticlePage(news: news),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    onLongPress: () async {
-                      if (isRead) {
-                        await _cacheController.remove(news.title);
-                        setState(() {
-                          _readTitles.remove(news.title);
-                          _newsViewedCount--;
-                        });
-                      }
-                    },
+                    onTap: () => Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: CompleteArticlePage(news: news, current: news.site),
+                          );
+                        },
+                      ),
+                    ),
                     child: SlideTransition(
                       position: Tween<Offset>(
                         begin: const Offset(0, 1),
@@ -126,7 +106,7 @@ class _ArticlesPageState extends State<ArticlesPage> {
                                 ),
                               ),
                             Hero(
-                              tag: news.imageUrl!,
+                              tag: news.title,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image.network(
