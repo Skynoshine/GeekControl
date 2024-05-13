@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:geekcontrol/services/cache/keys_enum.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalCache {
@@ -12,10 +13,12 @@ class LocalCache {
 
   Future<void> insertReader(String key, dynamic object) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final List<String> cacheList =
-        prefs.getStringList(CacheKeys.articles.name) ?? [];
+    List<String> cacheList = prefs.getStringList(key) ?? [];
 
-    cacheList.add(object);
+    final String objectString = object.toString();
+
+    cacheList.add(objectString);
+
     await prefs.setStringList(key, cacheList);
   }
 
@@ -25,9 +28,15 @@ class LocalCache {
 
     if (cachedStrings == null) return;
 
-    List cacheList = cachedStrings.map((item) => json.decode(item)).toList();
+    List<dynamic> cacheList = [];
 
-    cacheList.removeWhere((item) => item['value'] == title);
+    try {
+      cacheList = cachedStrings.map((item) => json.decode(item)).toList();
+    } catch (e) {
+      return;
+    }
+
+    cacheList.removeWhere((item) => item['title'] == title);
 
     List<String> updatedCachedStrings =
         cacheList.map((item) => json.encode(item)).toList();
@@ -44,15 +53,21 @@ class LocalCache {
     await prefs.clear();
   }
 
-  Future<List> get({required String key}) async {
+  Future<List<dynamic>> get({required String key}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? cachedStrings =
-        prefs.getStringList(key);
+    List<String>? cachedStrings = prefs.getStringList(key);
+
     if (cachedStrings == null || cachedStrings.isEmpty) {
       return [];
     }
-    List cacheList = cachedStrings.map((item) => json.decode(item)).toList();
 
+    List<dynamic> cacheList = [];
+    Logger().d('cachedStrings: $cachedStrings');
+    try {
+      cacheList = cachedStrings.map((item) => json.decode(item)).toList();
+    } catch (e) {
+      return [];
+    }
     return cacheList;
   }
 }

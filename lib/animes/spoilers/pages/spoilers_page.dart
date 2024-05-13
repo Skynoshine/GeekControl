@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/animes/spoilers/entities/spoiler_entity.dart';
 import 'package:geekcontrol/animes/spoilers/pages/complete_spoilers_page.dart';
-import 'package:geekcontrol/services/webscraper/spoilers_scraper.dart';
+import 'package:geekcontrol/services/sites/intoxi_animes/webscraper/spoilers_scraper.dart';
 import 'package:go_router/go_router.dart';
 
 class SpoilersPage extends StatefulWidget {
