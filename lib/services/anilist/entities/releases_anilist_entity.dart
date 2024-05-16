@@ -1,5 +1,5 @@
-import 'package:geekcontrol/core/utils/convert_state.dart';
-import 'package:geekcontrol/core/utils/entity_mappers.dart';
+import '../../../core/utils/convert_state.dart';
+import '../../../core/utils/entity_mappers.dart';
 
 class ReleasesAnilistEntity {
   final int id;

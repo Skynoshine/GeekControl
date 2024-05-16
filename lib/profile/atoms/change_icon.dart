@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
+import '../../core/library/hitagi_cup/features/text/hitagi_text.dart';
 
 class ChangeIconWidget extends StatelessWidget {
   const ChangeIconWidget({super.key});

@@ -1,89 +1,65 @@
-import 'package:geekcontrol/animes/spoilers/entities/spoiler_entity.dart';
-import 'package:geekcontrol/core/utils/api_utils.dart';
-import 'package:html/dom.dart';
-import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' as parser;
+import '../../../../animes/spoilers/entities/spoiler_entity.dart';
+import '../../../../core/utils/api_utils.dart';
+import '../../utils_scrap.dart';
 import 'package:logger/logger.dart';
 
 class SpoilersScrap {
   Future<List<SpoilersEntity>> getSpoilers() async {
-    final response = await http.get(IntoxiUtils.spoilers);
-
-    if (response.statusCode == 200) {
-      final document = parser.parse(response.body);
-      final elements = document.querySelectorAll('.post-inner');
-      return scrapeInitial(elements);
-    }
-    return [];
+    return await scrapeInitial();
   }
 
-  Future<List<SpoilersEntity>> getDetails(SpoilersEntity entity) async {
+  Future<List<SpoilersEntity>> getDetails(
+      {required SpoilersEntity entity}) async {
     return await scrapeDetails(entity);
   }
 }
 
 Future<List<SpoilersEntity>> scrapeDetails(SpoilersEntity entity) async {
-  try {
-    final http.Response response = await http.get(Uri.parse(entity.url));
-    if (response.statusCode == 200) {
-      final Document document = parser.parse(response.body);
-      final elements = document.querySelectorAll('.entry-inner p');
+  final doc = await Scraper().document(entity.url);
 
-      final List<String> contents =
-          elements.map((element) => element.text).toList();
+  final content = Scraper.docSelecAll(doc, '.entry-inner p');
+  final images = Scraper.docSelecAllAttr(doc, '.entry-inner img', 'src');
+  final video = Scraper.docSelecAttr(doc, '.entry-inner iframe', 'src');
+  Logger().i(video);
 
-      final imagesElement = document.querySelectorAll('.entry-inner img');
-
-      final List<String?> images =
-          imagesElement.map((element) => element.attributes['src']).toList();
-
-      final List<SpoilersEntity> updatedSpoilers = contents.map((content) {
-        return SpoilersEntity(
-          title: entity.title,
-          imageUrl: entity.imageUrl,
-          date: entity.date,
-          resume: entity.resume,
-          category: entity.category,
-          content: content,
-          url: entity.url,
-          sourceUrl: entity.sourceUrl,
-          createdAt: entity.createdAt,
-          updatedAt: entity.updatedAt,
-          images: images,
-        );
-      }).toList();
-      return updatedSpoilers;
-    }
-  } catch (e) {
-    Logger().e('Error scraping details: $e');
-  }
-  return [];
+  final List<SpoilersEntity> updatedSpoilers = content.map((content) {
+    return SpoilersEntity(
+      title: entity.title,
+      imageUrl: entity.imageUrl,
+      date: entity.date,
+      resume: entity.resume,
+      category: entity.category,
+      content: content,
+      url: entity.url,
+      sourceUrl: entity.sourceUrl,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      images: images,
+    );
+  }).toList();
+  return updatedSpoilers;
 }
 
-Future<List<SpoilersEntity>> scrapeInitial(List<Element> elements) async {
+Future<List<SpoilersEntity>> scrapeInitial() async {
   final List<SpoilersEntity> spoilersList = [];
 
-  for (final element in elements) {
-    final String title =
-        element.querySelector('.post-title.entry-title a')?.text ?? '';
-    final String? published = element.querySelector('.published.updated')?.text;
-    final String resume =
-        element.querySelector('.entry.excerpt.entry-summary p')?.text ?? '';
-    final String url = element
-            .querySelector('.post-title.entry-title a')
-            ?.attributes['href'] ??
-        '';
-    final String category =
-        element.querySelector('.post-category')?.text ?? 'N/A';
-    final String image =
-        element.querySelector('.post-thumbnail img')?.attributes['src'] ??
-            'N/A';
+  final doc = await Scraper().document(IntoxiUtils.spoilersStr);
+  final elements = doc.querySelectorAll('.post-inner');
+
+  for (final e in elements) {
+    final title = Scraper.elementSelec(e, '.post-title.entry-title a');
+    final published = Scraper.elementSelec(e, '.published.updated');
+    final resume = Scraper.elementSelec(e, '.entry.excerpt.entry-summary p');
+    final url =
+        Scraper.elementSelecAttr(e, '.post-title.entry-title a', 'href');
+    final category = Scraper.elementSelec(e, '.post-category');
+    final image = Scraper.elementSelecAttr(e, '.post-thumbnail img', 'src');
 
     final spoiler = SpoilersEntity(
       title: title,
       imageUrl: image,
-      date: published!.toUpperCase(),
-      resume: resume,
+      date: published.toUpperCase(),
+      resume: resume.trim(),
       category: category.toUpperCase(),
       content: '',
       url: url,
@@ -92,7 +68,6 @@ Future<List<SpoilersEntity>> scrapeInitial(List<Element> elements) async {
       updatedAt: DateTime.now(),
       images: [],
     );
-
     spoilersList.add(spoiler);
   }
   return spoilersList;

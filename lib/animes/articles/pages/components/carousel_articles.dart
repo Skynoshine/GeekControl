@@ -1,12 +1,16 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CarouselArticles extends StatelessWidget {
   final List<String> images;
   final String title;
 
-  const CarouselArticles(
-      {super.key, required this.images, required this.title});
+  const CarouselArticles({
+    super.key,
+    required this.images,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,38 +27,53 @@ class CarouselArticles extends StatelessWidget {
       ),
       itemCount: images.length,
       itemBuilder: (context, index, realIndex) {
-        return Stack(children: [
-          ClipRRect(
-            borderRadius: BorderRadiusDirectional.circular(8),
-            child: Image.network(
-              images[index],
-              height: 235,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Positioned(
-              bottom: 10,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(8),
+        return GestureDetector(
+          onTap: () => launchUrl(Uri.parse(images[index])),
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  images[index],
+                  height: 235,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Placeholder(
+                      fallbackWidth: 200,
+                      fallbackHeight: 200,
+                      color: Colors.grey,
+                    );
+                  },
                 ),
-                child: Text(
-                  textAlign: TextAlign.center,
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
+              ),
+              Positioned(
+                bottom: 10,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              )),
-        ]);
+              ),
+            ],
+          ),
+        );
       },
     );
   }

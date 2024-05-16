@@ -1,4 +1,4 @@
-import 'package:geekcontrol/services/anilist/entities/reviews_entity.dart';
+import 'reviews_entity.dart';
 
 class AnilistEntity {
   final int id;

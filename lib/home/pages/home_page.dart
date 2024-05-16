@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/home/atoms/bottom_bar.dart';
-import 'package:geekcontrol/home/components/banner_carrousel.dart';
-import 'package:geekcontrol/home/components/top_bar_widget.dart';
+import '../atoms/bottom_bar.dart';
+import '../components/banner_carrousel.dart';
+import '../components/top_bar_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

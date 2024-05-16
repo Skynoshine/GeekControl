@@ -13,7 +13,7 @@ class BottomBarWidget extends StatelessWidget {
       backgroundColor: Colors.transparent,
       activeColor: Colors.black,
       color: Colors.black,
-      height: 26,
+      height: 30,
       items: const [
         TabItem(icon: Icons.home),
         TabItem(icon: Icons.newspaper),
@@ -21,7 +21,7 @@ class BottomBarWidget extends StatelessWidget {
         TabItem(icon: Icons.article),
         TabItem(icon: Icons.person),
       ],
-      onTap: (index) => GoRouter.of(context).go(routesIndex(index)),
+      onTap: (index) => GoRouter.of(context).push(routesIndex(index)),
     );
   }
 

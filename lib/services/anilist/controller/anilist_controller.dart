@@ -1,7 +1,7 @@
-import 'package:geekcontrol/core/utils/date_time.dart';
-import 'package:geekcontrol/services/anilist/entities/releases_anilist_entity.dart';
-import 'package:geekcontrol/services/anilist/repository/anilist_repository.dart';
-import 'package:geekcontrol/services/cache/controller/local_cache_controller.dart';
+import '../../../core/utils/date_time.dart';
+import '../entities/releases_anilist_entity.dart';
+import '../repository/anilist_repository.dart';
+import '../../cache/controller/local_cache_controller.dart';
 
 class AnilistController {
   final DateTimeUtil dateTimeUtil = DateTimeUtil();

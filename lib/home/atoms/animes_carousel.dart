@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
-import 'package:geekcontrol/core/library/hitagi_cup/utils.dart';
-import 'package:geekcontrol/core/utils/loader_indicator.dart';
-import 'package:geekcontrol/services/anilist/repository/anilist_repository.dart';
-import 'package:geekcontrol/services/anilist/entities/manga_anilist_entity.dart';
-import 'package:geekcontrol/services/anilist/entities/releases_anilist_entity.dart';
-import 'package:geekcontrol/core/utils/convert_state.dart';
+import '../../core/library/hitagi_cup/features/text/hitagi_text.dart';
+import '../../core/library/hitagi_cup/utils.dart';
+import '../../core/utils/loader_indicator.dart';
+import '../../services/anilist/repository/anilist_repository.dart';
+import '../../services/anilist/entities/manga_anilist_entity.dart';
+import '../../services/anilist/entities/releases_anilist_entity.dart';
+import '../../core/utils/convert_state.dart';
 
 class AnimesCarouselWidget extends StatelessWidget {
   const AnimesCarouselWidget({super.key});

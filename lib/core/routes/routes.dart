@@ -1,22 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:geekcontrol/animes/articles/pages/articles_page.dart';
-import 'package:geekcontrol/animes/spoilers/pages/spoilers_page.dart';
+import '../../animes/articles/pages/articles_page.dart';
+import '../../animes/spoilers/pages/spoilers_page.dart';
 import 'package:go_router/go_router.dart';
-import 'package:geekcontrol/animes/ui/pages/details_anime_page.dart';
-import 'package:geekcontrol/home/atoms/search_page.dart';
-import 'package:geekcontrol/home/pages/home_page.dart';
-import 'package:geekcontrol/animes/ui/pages/releases_animes_page.dart';
-import 'package:geekcontrol/settings_page/pages/settings_page.dart';
+import '../../animes/ui/pages/details_anime_page.dart';
+import '../../home/atoms/search_page.dart';
+import '../../home/pages/home_page.dart';
+import '../../animes/ui/pages/releases_animes_page.dart';
+import '../../settings_page/pages/settings_page.dart';
 
 class AppRoutes {
-  static toHome(BuildContext context) {
-    GoRouter.of(context).go('/');
-  }
-
-  static toRoute(BuildContext context, String route) {
-    GoRouter.of(context).go(route);
-  }
-
   static final router = GoRouter(
     initialLocation: '/',
     routes: [

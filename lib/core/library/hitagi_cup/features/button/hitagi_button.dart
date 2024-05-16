@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
+import '../text/hitagi_text.dart';
 
 class HitagiButton extends TextButton {
   final String label;

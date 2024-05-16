@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/services/anilist/entities/manga_anilist_entity.dart';
-import 'package:geekcontrol/services/anilist/entities/reviews_entity.dart';
+import '../../services/anilist/entities/manga_anilist_entity.dart';
+import '../../services/anilist/entities/reviews_entity.dart';
 
 class ReviewsPage extends StatefulWidget {
   final List<MangaReviewEntity> reviews;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/home/atoms/search_page.dart';
+import '../atoms/search_page.dart';
 
 class TopBarWidget extends StatelessWidget {
   const TopBarWidget({super.key});
@@ -15,7 +15,7 @@ class TopBarWidget extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const SearchPage()),
+              MaterialPageRoute(builder: (context) => SearchPage()),
             );
           },
         ),

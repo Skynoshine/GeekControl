@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/animes/spoilers/entities/spoiler_entity.dart';
-import 'package:geekcontrol/animes/spoilers/pages/complete_spoilers_page.dart';
-import 'package:geekcontrol/services/sites/intoxi_animes/webscraper/spoilers_scraper.dart';
+import '../entities/spoiler_entity.dart';
+import 'complete_spoilers_page.dart';
+import '../../../services/sites/intoxi_animes/webscraper/spoilers_scraper.dart';
 import 'package:go_router/go_router.dart';
 
 class SpoilersPage extends StatefulWidget {
@@ -38,6 +38,7 @@ class _SpoilersPageState extends State<SpoilersPage> {
       });
     }
   }
+
   void _reloadSpoilers() {
     _loadSpoilers();
   }
@@ -47,7 +48,7 @@ class _SpoilersPageState extends State<SpoilersPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => GoRouter.of(context).go('/'),
+          onPressed: () => GoRouter.of(context).push('/'),
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
         title: const Text('Spoilers'),
@@ -99,32 +100,35 @@ class _SpoilersPageState extends State<SpoilersPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.only(top: 4.0, left: 4.0),
                 child: Text(
                   '${spoiler.category} - ${spoiler.date}',
                   style: const TextStyle(
-                      fontSize: 11,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 4, 46, 80)),
                   textAlign: TextAlign.start,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top: 2 / 5),
                 child: Text(
                   spoiler.title,
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(4),
                 child: Text(
-                  spoiler.content,
-                  style: const TextStyle(fontSize: 12),
+                  spoiler.resume,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
