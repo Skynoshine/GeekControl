@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.dart';
-import 'package:geekcontrol/core/utils/date_time.dart';
-import 'package:geekcontrol/services/anilist/entities/releases_anilist_entity.dart';
+import '../../core/library/hitagi_cup/features/text/hitagi_text.dart';
+import '../../core/utils/date_time.dart';
+import '../../services/anilist/entities/releases_anilist_entity.dart';
 
 class FieldsComponent extends StatelessWidget {
   final ReleasesAnilistEntity releases;

@@ -10,7 +10,7 @@ extension FastDescriptionExtension on FastDescription {
   String get message {
     switch (this) {
       case FastDescription.error:
-        return 'Ocorreu um erro. Por favor, tente novamente.';
+        return 'Ocorreu um erro. Por favor, tente novamente mais tarde.';
       case FastDescription.unavailable:
         return 'Esta função está temporariamente indisponível.';
       case FastDescription.success:

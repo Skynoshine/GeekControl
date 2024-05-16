@@ -1,6 +1,6 @@
-import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
-import 'package:geekcontrol/core/utils/logger.dart';
-import 'package:geekcontrol/services/database/database.dart';
+import '../../animes/articles/entities/articles_entity.dart';
+import '../../core/utils/logger.dart';
+import '../database/database.dart';
 
 class ArticlesCacheDB {
   Future<List<ArticlesEntity>> getArticlesCache(

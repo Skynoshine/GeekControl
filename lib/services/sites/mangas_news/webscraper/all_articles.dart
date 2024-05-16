@@ -1,7 +1,7 @@
-import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
-import 'package:geekcontrol/animes/sites_enum.dart';
-import 'package:geekcontrol/core/utils/api_utils.dart';
-import 'package:geekcontrol/services/sites/utils_scrap.dart';
+import '../../../../animes/articles/entities/articles_entity.dart';
+import '../../../../animes/sites_enum.dart';
+import '../../../../core/utils/api_utils.dart';
+import '../../utils_scrap.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
@@ -56,10 +56,11 @@ class MangaNewsAllArticles {
       String url, ArticlesEntity entity) async {
     final Document doc = await Scraper().document(url);
 
-    final images = Scraper.extractImage(
-        '.s-ct img', {'data': 'data-lazy-src'}, doc, 'src');
+    final images = Scraper.extractImages(
+        doc, '.s-ct img', {'data': 'data-lazy-src'}, 'src');
 
     final List<String?> content = Scraper.extractText(
+      doc,
       '.s-ct',
       {
         'p': 'p',
@@ -67,10 +68,9 @@ class MangaNewsAllArticles {
         'h1': 'h1',
         'li': 'li',
       },
-      doc,
     );
 
-    Scraper.removeHtmlElements(content, 'img');
+    Scraper.removeHtmlElementsList(content, ['<img', '<iframe']);
 
     return ArticlesEntity(
       title: entity.title,
@@ -87,6 +87,40 @@ class MangaNewsAllArticles {
       imagesPage: images,
       site: SitesEnum.animesNew.name,
     );
+  }
+
+  Future<List<ArticlesEntity>> searchArticle(String article) async {
+    const String path = '.p-wrap.p-grid.p-grid-1';
+
+    final Document doc =
+        await Scraper().document('https://animenew.com.br/?s=$article');
+    final articleElements = Scraper.docSelecAll(doc, '$path h3');
+    final images = Scraper.docSelecAllAttr(doc, '$path img', 'src');
+    final description = Scraper.docSelecAll(doc, '$path p');
+    final date = Scraper.docSelecAll(doc, '$path .meta-el.meta-date');
+    final author = Scraper.docSelecAll(doc, '$path .meta-el.meta-author a');
+    final titles = Scraper.docSelecAll(doc, '$path h3 a');
+    final urls = Scraper.docSelecAllAttr(doc, '$path h3 a', 'href');
+
+    List<ArticlesEntity> articlesList = [];
+    for (int i = 0; i < articleElements.length; i++) {
+      ArticlesEntity article = ArticlesEntity(
+        title: titles[i],
+        imageUrl: images[i],
+        date: date[i],
+        author: author[i],
+        category: '',
+        content: '',
+        url: urls[i],
+        sourceUrl: '',
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        resume: description[i],
+        site: SitesEnum.animesNew.name,
+      );
+      articlesList.add(article);
+    }
+    return articlesList;
   }
 
   Future<List<ArticlesEntity>> scrapeLimitedNewsList(int articleCount) async {

@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/animes/articles/controller/articles_controller.dart';
-import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
-import 'package:geekcontrol/animes/articles/pages/complete_article_page.dart';
-import 'package:geekcontrol/core/utils/loader_indicator.dart';
+import '../../animes/articles/controller/articles_controller.dart';
+import '../../animes/articles/entities/articles_entity.dart';
+import '../../animes/articles/pages/complete_article_page.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class BannerCarousel extends StatelessWidget {
   const BannerCarousel({super.key});
@@ -14,7 +14,29 @@ class BannerCarousel extends StatelessWidget {
       future: ArticlesController().bannerNews(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: Loader.pacman());
+          return Skeletonizer(
+            enabled: true,
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: 200,
+                enlargeCenterPage: true,
+                autoPlay: false,
+                aspectRatio: 16 / 9,
+                enableInfiniteScroll: false,
+                viewportFraction: 0.8,
+              ),
+              items: List.generate(5, (index) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                );
+              }),
+            ),
+          );
         } else if (snapshot.hasData) {
           List<ArticlesEntity> articles = snapshot.data!;
           return CarouselSlider(
@@ -36,7 +58,10 @@ class BannerCarousel extends StatelessWidget {
                     pageBuilder: (context, animation, secondaryAnimation) {
                       return FadeTransition(
                         opacity: animation,
-                        child: CompleteArticlePage(news: entry, current: entry.site),
+                        child: CompleteArticlePage(
+                          news: entry,
+                          current: entry.site,
+                        ),
                       );
                     },
                   ),

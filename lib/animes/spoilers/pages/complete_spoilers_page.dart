@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/animes/spoilers/entities/spoiler_entity.dart';
-import 'package:geekcontrol/services/sites/intoxi_animes/webscraper/spoilers_scraper.dart';
+import '../entities/spoiler_entity.dart';
+import '../../../services/sites/intoxi_animes/webscraper/spoilers_scraper.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class SpoilersDetailPage extends StatefulWidget {
   final SpoilersEntity spoiler;
@@ -24,7 +26,7 @@ class _SpoilersDetailPageState extends State<SpoilersDetailPage> {
 
   Future<void> _loadSpoilers() async {
     try {
-      final spoilersDetails = await _scrap.getDetails(widget.spoiler);
+      final spoilersDetails = await _scrap.getDetails(entity: widget.spoiler);
       setState(() {
         _spoilerContent =
             spoilersDetails.map((detail) => detail.content).toList();
@@ -50,11 +52,27 @@ class _SpoilersDetailPageState extends State<SpoilersDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Image.network(
-              widget.spoiler.imageUrl!,
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color:
+                        const Color.fromARGB(255, 60, 60, 60).withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.network(
+                  widget.spoiler.imageUrl!,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             Text(
@@ -70,10 +88,11 @@ class _SpoilersDetailPageState extends State<SpoilersDetailPage> {
             Text(
               widget.spoiler.category,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 12,
+                color: Colors.red,
                 fontWeight: FontWeight.bold,
               ),
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.start,
             ),
             const SizedBox(height: 8),
             if (_spoilerContent != null)
@@ -82,16 +101,29 @@ class _SpoilersDetailPageState extends State<SpoilersDetailPage> {
                 children: _spoilerContent!.map((content) {
                   return Text(
                     content,
-                    style: const TextStyle(fontSize: 14),
+                    style: GoogleFonts.aBeeZee(
+                      fontSize: 14,
+                      color: const Color.fromARGB(255, 4, 46, 80),
+                    ),
                     textAlign: TextAlign.start,
                   );
                 }).toList(),
               ),
+              
             if (_spoilerContent == null)
-              const Text(
-                'Loading content...',
-                style: TextStyle(fontSize: 14),
-                textAlign: TextAlign.start,
+              const Skeletonizer(
+                enabled: true,
+                child: SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: Card(
+                    surfaceTintColor: Colors.black,
+                    elevation: 4,
+                    child: ListTile(
+                      style: ListTileStyle.drawer,
+                    ),
+                  ),
+                ),
               ),
           ],
         ),

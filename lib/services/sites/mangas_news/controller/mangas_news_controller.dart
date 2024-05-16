@@ -1,6 +1,6 @@
-import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
-import 'package:geekcontrol/services/sites/mangas_news/webscraper/all_articles.dart';
-import 'package:geekcontrol/services/sites/mangas_news/webscraper/manga_articles.dart';
+import '../../../../animes/articles/entities/articles_entity.dart';
+import '../webscraper/all_articles.dart';
+import '../webscraper/manga_articles.dart';
 
 class MangaNewsController {
   Future<List<ArticlesEntity>> getMangasNews() async {

@@ -34,4 +34,12 @@ class Loader extends LoadingIndicator {
       colors: [Colors.orange, Colors.yellow, Colors.black],
     );
   }
+
+  factory Loader.pacmanSmall() {
+    return const Loader(
+      indicatorType: Indicator.pacman,
+      colors: [Colors.orange, Colors.yellow, Colors.black],
+      strokeWidth: 4,
+    );
+  }
 }

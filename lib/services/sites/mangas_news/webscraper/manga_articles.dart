@@ -1,7 +1,7 @@
-import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
-import 'package:geekcontrol/animes/sites_enum.dart';
-import 'package:geekcontrol/core/utils/api_utils.dart';
-import 'package:geekcontrol/services/sites/utils_scrap.dart';
+import '../../../../animes/articles/entities/articles_entity.dart';
+import '../../../../animes/sites_enum.dart';
+import '../../../../core/utils/api_utils.dart';
+import '../../utils_scrap.dart';
 import 'package:html/dom.dart';
 
 class AnimesnewMangasArticles {
@@ -79,12 +79,13 @@ class AnimesnewMangasArticles {
     }
 
     final contentList = Scraper.extractText(
-        '.s-ct',
-        {
-          'p': 'p',
-          'li': 'li',
-        },
-        doc);
+      doc,
+      '.s-ct',
+      {
+        'p': 'p',
+        'li': 'li',
+      },
+    );
 
     return ArticlesEntity(
       title: entity.title,

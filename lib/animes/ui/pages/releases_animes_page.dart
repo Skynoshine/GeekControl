@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/animes/components/fields_component.dart';
-import 'package:geekcontrol/core/utils/loader_indicator.dart';
-import 'package:geekcontrol/services/anilist/controller/anilist_controller.dart';
-import 'package:geekcontrol/services/anilist/entities/releases_anilist_entity.dart';
+import '../../components/fields_component.dart';
+import '../../../core/library/hitagi_cup/features/skeletonizer/articles_skeletonizer.dart';
+import '../../../core/utils/loader_indicator.dart';
+import '../../../services/anilist/controller/anilist_controller.dart';
+import '../../../services/anilist/entities/releases_anilist_entity.dart';
 import 'package:go_router/go_router.dart';
 
 class ReleasesAnimesPage extends StatefulWidget {
@@ -28,7 +29,7 @@ class _ReleasesAnimesPageState extends State<ReleasesAnimesPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => GoRouter.of(context).go('/'),
+          onPressed: () => GoRouter.of(context).push('/'),
           icon: const Icon(Icons.arrow_back),
         ),
         title: const Center(child: Text('Últimos lançamentos')),
@@ -37,24 +38,14 @@ class _ReleasesAnimesPageState extends State<ReleasesAnimesPage> {
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: Loader.pacman(),
-            );
+            return const HitagiSkeletonizer();
           } else {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 ReleasesAnilistEntity releases = snapshot.data![index];
                 return GestureDetector(
-                  onTap: () =>
-                      GoRouter.of(context).go('/details'),
-                  onLongPress: () => setState(() {
-                    if (readers.contains(releases.id)) {
-                      readers.remove(releases.id);
-                    } else {
-                      readers.add(releases.id);
-                    }
-                  }),
+                  onTap: () => GoRouter.of(context).push('/details'),
                   child: Card(
                     margin: const EdgeInsets.all(8),
                     elevation: 4,

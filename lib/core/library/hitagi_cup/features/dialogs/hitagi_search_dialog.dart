@@ -16,32 +16,33 @@ class HitagiSearchDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: controller,
-            onChanged: onChanged,
-            onSubmitted: onSubmitted,
-            decoration: InputDecoration(
-              hintText: hintText,
-              isDense: true,
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
+    return Container(
+      color: Colors.grey[200],
+      child: TextField(
+        controller: controller,
+        onChanged: onChanged,
+        onSubmitted: onSubmitted,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: const TextStyle(color: Colors.grey),
+          isDense: true,
+          prefixIcon: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.send),
+            onPressed: () {
+              if (onSubmitted != null) {
+                onSubmitted!(controller.text);
+              }
+            },
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
-        IconButton(
-          icon: const Icon(Icons.send),
-          onPressed: () {
-            if (onSubmitted != null) {
-              onSubmitted!(controller.text);
-            }
-          },
-        ),
-      ],
+      ),
     );
   }
 }

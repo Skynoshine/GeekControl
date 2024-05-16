@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:geekcontrol/animes/articles/controller/articles_controller.dart';
-import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
-import 'package:geekcontrol/animes/articles/pages/components/carousel_articles.dart';
-import 'package:geekcontrol/core/utils/loader_indicator.dart';
+import '../controller/articles_controller.dart';
+import '../entities/articles_entity.dart';
+import 'components/carousel_articles.dart';
+import '../../../core/utils/loader_indicator.dart';
+import 'package:logger/logger.dart';
 
 class CompleteArticlePage extends StatelessWidget {
   final ArticlesEntity news;
@@ -29,6 +30,7 @@ class CompleteArticlePage extends StatelessWidget {
               child: Loader.pacman(),
             );
           } else if (snapshot.hasError) {
+            Logger().e(snapshot.error);
             return Center(
               child: Text('Erro: ${snapshot.error}'),
             );

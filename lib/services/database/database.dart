@@ -1,5 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:geekcontrol/core/utils/logger.dart';
+import '../../core/utils/logger.dart';
 import 'package:logger/logger.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
