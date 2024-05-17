@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../animes/articles/controller/articles_controller.dart';
-import '../../animes/articles/entities/articles_entity.dart';
-import '../../animes/articles/pages/complete_article_page.dart';
-import '../../animes/components/floating_button.dart';
-import '../../core/library/hitagi_cup/features/dialogs/default_dialogs.dart';
-import '../../core/library/hitagi_cup/features/dialogs/hitagi_search_dialog.dart';
+import 'package:geekcontrol/animes/articles/controller/articles_controller.dart';
+import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/articles/pages/complete_article_page.dart';
+import 'package:geekcontrol/animes/components/floating_button.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/dialogs/default_dialogs.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/dialogs/hitagi_search_dialog.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});

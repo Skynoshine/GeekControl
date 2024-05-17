@@ -15,7 +15,7 @@ class TopBarWidget extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SearchPage()),
+              MaterialPageRoute(builder: (context) => const SearchPage()),
             );
           },
         ),

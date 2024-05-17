@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import '../controller/articles_controller.dart';
-import '../entities/articles_entity.dart';
+import 'package:geekcontrol/animes/articles/controller/articles_controller.dart';
+import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/components/floating_button.dart';
+import 'package:geekcontrol/animes/sites_enum.dart';
+import 'package:geekcontrol/core/utils/loader_indicator.dart';
 import 'complete_article_page.dart';
-import '../../components/floating_button.dart';
-import '../../sites_enum.dart';
-import '../../../core/library/hitagi_cup/features/skeletonizer/articles_skeletonizer.dart';
+
 import 'package:go_router/go_router.dart';
 
 class ArticlesPage extends StatefulWidget {
@@ -44,9 +45,9 @@ class _ArticlesPageState extends State<ArticlesPage> {
         future: ct.articles,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const HitagiSkeletonizer();
+            return Loader.pacman();
           } else if (snapshot.hasError) {
-            return const HitagiSkeletonizer();
+            return Center(child: Text('Erro ao carregar ${snapshot.error}'));
           } else {
             final newsList = snapshot.data!;
             return AnimatedList(

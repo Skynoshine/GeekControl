@@ -63,6 +63,7 @@ dependencies:
   url_launcher: ^6.2.6
   google_fonts: ^4.0.4
   youtube_player_flutter: ^8.1.2
+  html: ^0.15.4
 
 dev_dependencies:
   flutter_test:

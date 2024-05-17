@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
 import 'package:geekcontrol/animes/sites_enum.dart';
 import 'package:geekcontrol/core/utils/api_utils.dart';
-import 'package:geekcontrol/services/sites/animes_united/animes_united_scraper.dart';
+import 'package:geekcontrol/services/sites/otakupt/otakupt_scraper.dart';
 import 'package:geekcontrol/services/sites/intoxi_animes/webscraper/intoxi_articles_scraper.dart';
 import 'package:geekcontrol/services/sites/mangas_news/webscraper/all_articles.dart';
 
@@ -47,9 +47,13 @@ class ArticlesController extends ChangeNotifier {
       articlesSearch = _animewsNews.searchArticle(article);
       currenctIndex = 1;
     }
+    if (SitesEnum.otakuPt.key == site.key) {
+      articlesSearch = _otakuPt.searchArticles(article);
+      currenctIndex = 2;
+    }
     if (SitesEnum.intoxi.key == site.key) {
       articlesSearch = intoxiSearch(article: article);
-      currenctIndex = 2;
+      currenctIndex = 3;
     }
     notifyListeners();
   }

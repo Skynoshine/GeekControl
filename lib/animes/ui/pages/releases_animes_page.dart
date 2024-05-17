@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../components/fields_component.dart';
-import '../../../core/library/hitagi_cup/features/skeletonizer/articles_skeletonizer.dart';
-import '../../../core/utils/loader_indicator.dart';
-import '../../../services/anilist/controller/anilist_controller.dart';
-import '../../../services/anilist/entities/releases_anilist_entity.dart';
+import 'package:geekcontrol/animes/components/fields_component.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/skeletonizer/articles_skeletonizer.dart';
+import 'package:geekcontrol/services/anilist/controller/anilist_controller.dart';
+import 'package:geekcontrol/services/anilist/entities/releases_anilist_entity.dart';
 import 'package:go_router/go_router.dart';
 
 class ReleasesAnimesPage extends StatefulWidget {
