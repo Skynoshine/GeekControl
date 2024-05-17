@@ -1,3 +1,5 @@
+import 'package:geekcontrol/services/sites/otakupt/profile.dart';
+
 import '../../animes/articles/pages/articles_page.dart';
 import '../../animes/spoilers/pages/spoilers_page.dart';
 import 'package:go_router/go_router.dart';
@@ -28,8 +30,8 @@ class AppRoutes {
         builder: (context, state) => const SettingsPage(),
       ),
       GoRoute(
-        path: '/search',
-        builder: (context, state) => const SearchPage(),
+        path: '/profile',
+        builder: (context, state) => const Profile(),
       ),
       GoRoute(
         path: '/details',

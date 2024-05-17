@@ -36,7 +36,7 @@ class BottomBarWidget extends StatelessWidget {
       case 3:
         return '/spoilers';
       case 4:
-        return 'search';
+        return '/profile';
       case 5:
         return 'animeDetails';
       default:
