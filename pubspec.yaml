@@ -91,6 +91,9 @@ flutter:
     - assets/animes_new.png
     - assets/intoxi.png
     - assets/otakuPT_icon.png
+    - assets/geekcontrol_banner.png
+    - assets/geekcontrol_logo.png
+    - assets/default.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

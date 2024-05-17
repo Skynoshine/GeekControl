@@ -2,9 +2,10 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:label="geekcontrol"
+        android:label="GeekControl"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/geekcontrol_icon">
+        
         <activity
             android:name=".MainActivity"
             android:exported="true"
