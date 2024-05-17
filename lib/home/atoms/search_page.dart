@@ -64,20 +64,23 @@ class _SearchPageState extends State<SearchPage> {
                           return Card(
                             margin: const EdgeInsets.symmetric(vertical: 4),
                             child: ListTile(
-                              leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(
-                                  article.imageUrl!,
-                                  width: 80,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const Placeholder(
-                                      fallbackWidth: 200,
-                                      fallbackHeight: 200,
-                                      color: Colors.grey,
-                                    );
-                                  },
+                              leading: SizedBox(
+                                width: 80,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    article.imageUrl!,
+                                    width: 80,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Placeholder(
+                                        fallbackWidth: 200,
+                                        fallbackHeight: 200,
+                                        color: Colors.grey,
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                               title: Text(
