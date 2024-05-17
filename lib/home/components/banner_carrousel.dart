@@ -18,7 +18,7 @@ class BannerCarousel extends StatelessWidget {
             enabled: true,
             child: CarouselSlider(
               options: CarouselOptions(
-                height: 200,
+                height: 150,
                 enlargeCenterPage: true,
                 autoPlay: false,
                 aspectRatio: 16 / 9,
@@ -41,7 +41,7 @@ class BannerCarousel extends StatelessWidget {
           List<ArticlesEntity> articles = snapshot.data!;
           return CarouselSlider(
             options: CarouselOptions(
-              height: 200,
+              height: 150,
               enlargeCenterPage: true,
               autoPlay: true,
               aspectRatio: 16 / 9,
