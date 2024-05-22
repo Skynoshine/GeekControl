@@ -1,49 +1,20 @@
 class Query {
-  static String abrangeQuery({required String title}) {
+  static String ratedsQuery() {
     return '''
- query  {
-  Media(search: "$title") {
-    id
-    averageScore
-    meanScore
-    genres
-    bannerImage
-    status
-    coverImage {
-      large
-      extraLarge
-    }
-    description
-    type
-    title {
-      english
-      romaji
-      native
-    }
-    reviews{
-      edges{
-        node{
-          id
-          userId
-          mediaId
-          mediaType
-          body
-          summary
-          rating
-          ratingAmount
-          userRating
-          score
-          siteUrl
-          createdAt
-          updatedAt
-          user{
-            name
-            bannerImage
-            avatar {
-              large
-            }
-          }
-        }
+{
+  Page {
+    media(sort: POPULARITY_DESC, type: ANIME) {
+      id
+      averageScore
+      meanScore
+      coverImage {
+        large
+        extraLarge
+      }
+      type
+      title {
+        english
+        romaji
       }
     }
   }

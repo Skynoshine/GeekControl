@@ -1,5 +1,5 @@
-import '../../../core/utils/convert_state.dart';
-import '../../../core/utils/entity_mappers.dart';
+import 'package:geekcontrol/core/utils/convert_state.dart';
+import 'package:geekcontrol/core/utils/entity_mappers.dart';
 
 class ReleasesAnilistEntity {
   final int id;
@@ -9,7 +9,7 @@ class ReleasesAnilistEntity {
   final String coverImage;
   final int episodes;
   final int? actuallyEpisode;
-  final int updatedAt;
+  final int animeUpdatedAt;
   final String status;
   final String season;
   final int seasonYear;
@@ -19,6 +19,8 @@ class ReleasesAnilistEntity {
   final int airingAt;
   final Map<String, dynamic> startDate;
   final Map<String, dynamic>? endDate;
+  final String createdAt;
+  final String updatedAt;
 
   ReleasesAnilistEntity({
     required this.id,
@@ -27,7 +29,7 @@ class ReleasesAnilistEntity {
     required this.bannerImage,
     required this.coverImage,
     required this.episodes,
-    required this.updatedAt,
+    required this.animeUpdatedAt,
     required this.status,
     required this.season,
     required this.seasonYear,
@@ -38,6 +40,8 @@ class ReleasesAnilistEntity {
     required this.nextEpisode,
     required this.airingAt,
     required this.actuallyEpisode,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   static List<ReleasesAnilistEntity> toEntityList(Map<String, dynamic> json) {
@@ -46,9 +50,9 @@ class ReleasesAnilistEntity {
       return ReleasesAnilistEntity(
         id: media['id'],
         episodeId: media['id'],
-        englishTitle: media['title']?['english'] ?? '',
+        englishTitle: media['title']?['english'] ?? media['title']?['romaji'],
         episodes: media['episodes'] ?? 0,
-        updatedAt: media['updatedAt'] ?? 0,
+        animeUpdatedAt: media['updatedAt'] ?? 0,
         status: MangaStates.toPortuguese(media['status'] ?? ''),
         season: media['season'] ?? '',
         seasonYear: media['seasonYear'] ?? 0,
@@ -62,9 +66,60 @@ class ReleasesAnilistEntity {
         nextEpisode: media['nextAiringEpisode']?['episode'] ?? 0,
         airingAt: media['nextAiringEpisode']?['airingAt'] ?? 0,
         actuallyEpisode: EntityMappers.episodes(media),
+        createdAt: DateTime.now().toIso8601String(),
+        updatedAt: DateTime.now().toIso8601String(),
       );
     }).toList();
     return entities;
+  }
+
+  factory ReleasesAnilistEntity.fromJson(Map<String, dynamic> media) {
+    return ReleasesAnilistEntity(
+      id: media['id'],
+      episodeId: media['id'],
+      englishTitle: media['title']?['english'] ?? '',
+      episodes: media['episodes'] ?? 0,
+      animeUpdatedAt: media['updatedAt'] ?? 0,
+      status: MangaStates.toPortuguese(media['status'] ?? ''),
+      season: media['season'] ?? '',
+      seasonYear: media['seasonYear'] ?? 0,
+      startDate: media['startDate'] ?? {},
+      endDate: media['endDate'] ?? {},
+      bannerImage: media['bannerImage'] ?? media['coverImage']['extraLarge'],
+      coverImage: media['coverImage']['extraLarge'] ?? '',
+      author:
+          EntityMappers.roleEntity(media)?['node']?['name']?['full'] ?? 'N/A',
+      artist: '',
+      nextEpisode: media['nextAiringEpisode']?['episode'] ?? 0,
+      airingAt: media['nextAiringEpisode']?['airingAt'] ?? 0,
+      actuallyEpisode: EntityMappers.episodes(media),
+      createdAt: DateTime.now().toIso8601String(),
+      updatedAt: DateTime.now().toIso8601String(),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'episodeId': episodeId,
+      'englishTitle': englishTitle,
+      'episodes': episodes,
+      'animeUpdatedAt': animeUpdatedAt,
+      'status': status,
+      'season': season,
+      'seasonYear': seasonYear,
+      'startDate': startDate,
+      'endDate': endDate,
+      'bannerImage': bannerImage,
+      'coverImage': coverImage,
+      'author': author,
+      'artist': artist,
+      'nextEpisode': nextEpisode,
+      'airingAt': airingAt,
+      'actuallyEpisode': actuallyEpisode,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+    };
   }
 
   ReleasesAnilistEntity.empty()
@@ -76,7 +131,7 @@ class ReleasesAnilistEntity {
         bannerImage = '',
         coverImage = '',
         episodes = 0,
-        updatedAt = 0,
+        animeUpdatedAt = 0,
         status = '',
         season = '',
         seasonYear = 0,
@@ -84,5 +139,7 @@ class ReleasesAnilistEntity {
         author = '',
         artist = '',
         actuallyEpisode = 0,
-        endDate = {};
+        endDate = {},
+        createdAt = DateTime.now().toIso8601String(),
+        updatedAt = DateTime.now().toIso8601String();
 }
