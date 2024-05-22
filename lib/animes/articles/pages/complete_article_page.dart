@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import '../controller/articles_controller.dart';
-import '../entities/articles_entity.dart';
-import 'components/carousel_articles.dart';
-import '../../../core/utils/loader_indicator.dart';
+import 'package:geekcontrol/animes/articles/controller/articles_controller.dart';
+import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/core/library/hitagi_cup/features/carousel/hitagi_carousel.dart';
+import 'package:geekcontrol/core/utils/loader_indicator.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:logger/logger.dart';
 
 class CompleteArticlePage extends StatelessWidget {
@@ -41,9 +43,9 @@ class CompleteArticlePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   article.imagesPage != null
-                      ? CarouselArticles(
+                      ? HitagiCarousel(
                           images: article.imagesPage!, title: article.title)
-                      : CarouselArticles(
+                      : HitagiCarousel(
                           images: [article.imageUrl!], title: article.title),
                   const SizedBox(height: 16),
                   Padding(
@@ -61,8 +63,9 @@ class CompleteArticlePage extends StatelessWidget {
                         const SizedBox(height: 16),
                         Text(
                           article.content,
-                          style: const TextStyle(
-                            fontSize: 16,
+                          style: GoogleFonts.aBeeZee(
+                            fontSize: 14,
+                            color: const Color.fromARGB(255, 4, 46, 80),
                           ),
                         ),
                         const SizedBox(height: 4),

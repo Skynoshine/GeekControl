@@ -2,11 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class CarouselArticles extends StatelessWidget {
+class HitagiCarousel extends StatelessWidget {
   final List<String> images;
   final String title;
 
-  const CarouselArticles({
+  const HitagiCarousel({
     super.key,
     required this.images,
     required this.title,
@@ -16,7 +16,7 @@ class CarouselArticles extends StatelessWidget {
   Widget build(BuildContext context) {
     return CarouselSlider.builder(
       options: CarouselOptions(
-        height: 235,
+        height: 200,
         aspectRatio: 16 / 9,
         enlargeCenterPage: true,
         autoPlay: images.length > 1,
