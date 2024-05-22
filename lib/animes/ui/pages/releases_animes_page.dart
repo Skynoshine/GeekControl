@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekcontrol/animes/components/fields_component.dart';
-import 'package:geekcontrol/core/library/hitagi_cup/features/skeletonizer/articles_skeletonizer.dart';
+import 'package:geekcontrol/core/utils/loader_indicator.dart';
 import 'package:geekcontrol/services/anilist/controller/anilist_controller.dart';
 import 'package:geekcontrol/services/anilist/entities/releases_anilist_entity.dart';
 import 'package:go_router/go_router.dart';
@@ -37,10 +37,10 @@ class _ReleasesAnimesPageState extends State<ReleasesAnimesPage> {
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const HitagiSkeletonizer();
+            return Loader.pacman();
           } else {
             return ListView.builder(
-              itemCount: snapshot.data!.length,
+              itemCount: snapshot.data?.length ?? 0,
               itemBuilder: (context, index) {
                 ReleasesAnilistEntity releases = snapshot.data![index];
                 return GestureDetector(

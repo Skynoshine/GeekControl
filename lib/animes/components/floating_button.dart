@@ -1,7 +1,7 @@
 import 'package:animated_floating_buttons/animated_floating_buttons.dart';
 import 'package:flutter/material.dart';
-import '../articles/controller/articles_controller.dart';
-import '../sites_enum.dart';
+import 'package:geekcontrol/animes/articles/controller/articles_controller.dart';
+import 'package:geekcontrol/animes/sites_enum.dart';
 
 class HitagiFloattingButton extends StatelessWidget {
   final ArticlesController _ct;
