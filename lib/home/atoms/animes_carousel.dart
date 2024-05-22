@@ -3,7 +3,6 @@ import 'package:geekcontrol/core/library/hitagi_cup/features/text/hitagi_text.da
 import 'package:geekcontrol/core/library/hitagi_cup/utils.dart';
 import 'package:geekcontrol/core/utils/convert_state.dart';
 import 'package:geekcontrol/core/utils/loader_indicator.dart';
-import 'package:geekcontrol/services/anilist/entities/manga_anilist_entity.dart';
 import 'package:geekcontrol/services/anilist/entities/releases_anilist_entity.dart';
 import 'package:geekcontrol/services/anilist/repository/anilist_repository.dart';
 
@@ -14,13 +13,12 @@ class AnimesCarouselWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
-      future: AnilistRepository().fetchAllData(),
+      future: AnilistRepository().getReleasesAnimes(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: Loader.pacman());
         } else {
           final releases = snapshot.data![0] as ReleasesAnilistEntity;
-          final anilist = snapshot.data![1] as AnilistEntity;
 
           return Scaffold(
             body: Stack(
@@ -66,22 +64,22 @@ class AnimesCarouselWidget extends StatelessWidget {
                             text: releases.englishTitle,
                             typography: HitagiTypography.giga,
                           ),
-                          HitagiText(
+                          const HitagiText(
                             text:
-                                '${anilist.review.first.averageScore}% Gostaram',
+                                '${'anilist.review.first.averageScore'}% Gostaram',
                             icon: Icons.star,
                             typography: HitagiTypography.title,
-                            iconColor: const Color.fromARGB(255, 223, 201, 4),
+                            iconColor: Color.fromARGB(255, 223, 201, 4),
                           ),
                           HitagiText(
                             text: MangaStates.toPortuguese(
-                                anilist.review.first.status),
+                                releases.artist),
                             typography: HitagiTypography.title,
                             icon: Icons.remove_red_eye_sharp,
                           ),
-                          HitagiText(
+                          const HitagiText(
                             text:
-                                '${anilist.genres.first} ⚬ ${anilist.genres[1]}',
+                                '${'anilist.genres.first'} ⚬ ${'anilist.genres[1]'}',
                             size: 16,
                             icon: Icons.book,
                             isBold: true,

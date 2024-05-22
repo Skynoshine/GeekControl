@@ -1,8 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import '../../animes/articles/controller/articles_controller.dart';
-import '../../animes/articles/entities/articles_entity.dart';
-import '../../animes/articles/pages/complete_article_page.dart';
+import 'package:geekcontrol/animes/articles/controller/articles_controller.dart';
+import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/articles/pages/complete_article_page.dart';
+import 'package:logger/logger.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class BannerCarousel extends StatelessWidget {
@@ -41,7 +42,7 @@ class BannerCarousel extends StatelessWidget {
           List<ArticlesEntity> articles = snapshot.data!;
           return CarouselSlider(
             options: CarouselOptions(
-              height: 150,
+              height: 110,
               enlargeCenterPage: true,
               autoPlay: true,
               aspectRatio: 16 / 9,
@@ -106,6 +107,7 @@ class BannerCarousel extends StatelessWidget {
             }).toList(),
           );
         } else {
+          Logger().e(snapshot.error);
           return const Center(
             child: Text(
               'Nenhum dado disponível',
