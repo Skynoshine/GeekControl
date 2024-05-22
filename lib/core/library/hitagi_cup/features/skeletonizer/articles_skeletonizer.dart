@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class HitagiSkeletonizer extends StatelessWidget {
-  final int itemCount;
-
-  const HitagiSkeletonizer({super.key, this.itemCount = 5});
+class HitagiArticleSkeletonizer extends StatelessWidget {
+  const HitagiArticleSkeletonizer({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
       enabled: true,
-      child: ListView.builder(
-        itemCount: itemCount,
-        itemBuilder: (context, index) {
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(5, (index) {
           return Card(
             elevation: 4,
             margin: const EdgeInsets.all(8),
@@ -45,7 +45,7 @@ class HitagiSkeletonizer extends StatelessWidget {
               ],
             ),
           );
-        },
+        }),
       ),
     );
   }
