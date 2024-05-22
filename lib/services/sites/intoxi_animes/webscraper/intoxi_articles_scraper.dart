@@ -1,6 +1,7 @@
-import '../../../../animes/articles/entities/articles_entity.dart';
-import '../../../../animes/sites_enum.dart';
-import '../../utils_scrap.dart';
+import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/sites_enum.dart';
+import 'package:geekcontrol/core/utils/api_utils.dart';
+import 'package:geekcontrol/services/sites/utils_scrap.dart';
 
 class IntoxiArticles {
   Future<List<ArticlesEntity>> scrapeArticles(String uri) async {
@@ -38,6 +39,10 @@ class IntoxiArticles {
       }
     }
     return scrapeList;
+  }
+
+  Future<List<ArticlesEntity>> searchArticles({required String article}) async {
+    return await scrapeArticles('${IntoxiUtils.uriStr}?s=$article');
   }
 
   Future<ArticlesEntity> scrapeArticleDetails(
