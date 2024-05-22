@@ -2,7 +2,9 @@ enum CacheKeys {
   releases(key: 'releases'),
   favorites(key: 'favorites'),
   reads(key: 'reads'),
-  articles(key: 'articles');
+  anilist(key: 'anilist'),
+  articles(key: 'articles'),
+  rates(key: 'rates');
 
   final String key;
 
