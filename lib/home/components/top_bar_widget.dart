@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../atoms/search_page.dart';
 
 class TopBarWidget extends StatelessWidget {
@@ -21,11 +22,11 @@ class TopBarWidget extends StatelessWidget {
         ),
         IconButton(
           icon: const Icon(Icons.notifications),
-          onPressed: () {},
+          onPressed: () => GoRouter.of(context).push('/wallpapers'),
         ),
         IconButton(
           icon: const Icon(Icons.settings),
-          onPressed: () {},
+          onPressed: () => GoRouter.of(context).push('/test'),
         ),
       ],
     );

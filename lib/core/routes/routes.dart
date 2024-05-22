@@ -1,13 +1,12 @@
+import 'package:geekcontrol/animes/articles/pages/articles_page.dart';
+import 'package:geekcontrol/animes/spoilers/pages/spoilers_page.dart';
+import 'package:geekcontrol/animes/ui/pages/details_anime_page.dart';
+import 'package:geekcontrol/animes/ui/pages/releases_animes_page.dart';
+import 'package:geekcontrol/home/pages/home_page.dart';
+import 'package:geekcontrol/screen_test.dart';
 import 'package:geekcontrol/services/sites/otakupt/profile.dart';
-
-import '../../animes/articles/pages/articles_page.dart';
-import '../../animes/spoilers/pages/spoilers_page.dart';
+import 'package:geekcontrol/services/sites/wallpapers/pages/wallpapers_page.dart';
 import 'package:go_router/go_router.dart';
-import '../../animes/ui/pages/details_anime_page.dart';
-import '../../home/atoms/search_page.dart';
-import '../../home/pages/home_page.dart';
-import '../../animes/ui/pages/releases_animes_page.dart';
-import '../../settings_page/pages/settings_page.dart';
 
 class AppRoutes {
   static final router = GoRouter(
@@ -26,8 +25,8 @@ class AppRoutes {
         builder: (context, state) => const ReleasesAnimesPage(),
       ),
       GoRoute(
-        path: '/settings',
-        builder: (context, state) => const SettingsPage(),
+        path: '/test',
+        builder: (context, state) => const TestScreen(),
       ),
       GoRoute(
         path: '/profile',
@@ -40,6 +39,10 @@ class AppRoutes {
       GoRoute(
         path: '/spoilers',
         builder: (context, state) => const SpoilersPage(),
+      ),
+      GoRoute(
+        path: '/wallpapers',
+        builder: (context, state) => const WallpaperListScreen(),
       ),
     ],
   );
