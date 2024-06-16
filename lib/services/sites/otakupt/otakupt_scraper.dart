@@ -4,7 +4,7 @@ import 'package:geekcontrol/services/sites/utils_scrap.dart';
 
 
 class OtakuPT {
-  Future<List<ArticlesEntity>> fetchArticles() async {
+  Future<List<ArticlesEntity>> scrapeArticles() async {
     const String uri = 'https://www.otakupt.com/category/anime';
 
     final doc = await Scraper().document(uri);
@@ -80,7 +80,7 @@ class OtakuPT {
     return articlesList;
   }
 
-  Future<ArticlesEntity> getArticleDetailsScrape(
+  Future<ArticlesEntity> scrapeArticleDetails(
       String url, ArticlesEntity entity) async {
     final doc = await Scraper().document(url);
 

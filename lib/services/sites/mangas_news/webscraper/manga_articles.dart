@@ -1,7 +1,7 @@
-import '../../../../animes/articles/entities/articles_entity.dart';
-import '../../../../animes/sites_enum.dart';
-import '../../../../core/utils/api_utils.dart';
-import '../../utils_scrap.dart';
+import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/sites_enum.dart';
+import 'package:geekcontrol/core/utils/api_utils.dart';
+import 'package:geekcontrol/services/sites/utils_scrap.dart';
 import 'package:html/dom.dart';
 
 class AnimesnewMangasArticles {
@@ -44,22 +44,6 @@ class AnimesnewMangasArticles {
         }
       }
     }
-    await getMangasDetails(
-        ArticlesEntity(
-          title: '',
-          imageUrl: '',
-          date: '',
-          author: '',
-          resume: '',
-          site: SitesEnum.animesNew.name,
-          category: '',
-          content: '',
-          url: '',
-          sourceUrl: '',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ),
-        'https://animenew.com.br/frieren-fas-criticam-fern-por-esta-acima-do-peso/');
     return scrapeList;
   }
 

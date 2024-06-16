@@ -21,12 +21,8 @@ class TopBarWidget extends StatelessWidget {
           },
         ),
         IconButton(
-          icon: const Icon(Icons.notifications),
-          onPressed: () => GoRouter.of(context).push('/wallpapers'),
-        ),
-        IconButton(
           icon: const Icon(Icons.settings),
-          onPressed: () => GoRouter.of(context).push('/test'),
+          onPressed: () => GoRouter.of(context).push('/settings'),
         ),
       ],
     );

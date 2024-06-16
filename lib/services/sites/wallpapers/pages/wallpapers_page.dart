@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geekcontrol/services/sites/wallpapers/webscraper/wallpaper.dart';
 
 class WallpaperListScreen extends StatefulWidget {
@@ -115,6 +116,25 @@ class _WallpaperListScreenState extends State<WallpaperListScreen> {
                           color: Colors.white,
                           onPressed: () => _downloadImage(_images[index]),
                         ),
+                      ),
+                      Positioned(
+                        bottom: 0.0,
+                        right: 25,
+                        child: IconButton(
+                            icon: const Icon(Icons.copy),
+                            color: Colors.white,
+                            onPressed: () {
+                              Clipboard.setData(
+                                ClipboardData(
+                                  text: _images[index],
+                                ),
+                              );
+                              SnackBar snackBar = const SnackBar(
+                                content: Text('Link copiado'),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }),
                       ),
                     ],
                   );

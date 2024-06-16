@@ -65,7 +65,7 @@ class _ArticlesPageState extends State<ArticlesPage> {
                   builder: (context, isReadSnapshot) {
                     if (isReadSnapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return Container(); // Placeholder enquanto espera
+                      return Container();
                     }
                     return SlideTransition(
                       position: Tween<Offset>(
@@ -92,7 +92,6 @@ class _ArticlesPageState extends State<ArticlesPage> {
                               },
                             ),
                           );
-
                           await ct.markAsRead(news.title, readArticles);
                         },
                       ),

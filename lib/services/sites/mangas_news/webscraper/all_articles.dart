@@ -1,24 +1,24 @@
-import '../../../../animes/articles/entities/articles_entity.dart';
-import '../../../../animes/sites_enum.dart';
-import '../../../../core/utils/api_utils.dart';
-import '../../utils_scrap.dart';
+import 'package:geekcontrol/animes/articles/entities/articles_entity.dart';
+import 'package:geekcontrol/animes/sites_enum.dart';
+import 'package:geekcontrol/core/utils/api_utils.dart';
+import 'package:geekcontrol/services/sites/utils_scrap.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
-class MangaNewsAllArticles {
-  Future<List<ArticlesEntity>> getNewsScrap() async {
+class MangaNews {
+  Future<List<ArticlesEntity>> scrapeArticles() async {
     final List<ArticlesEntity> scrapeList = [];
 
     final Document doc = await Scraper().document(AnimesNewUtils.uriStr);
-    final articleElements = doc.querySelectorAll('.p-wrap');
+    final articleElements = doc.querySelectorAll('.list-holder');
 
     for (final element in articleElements) {
       if (!element.classes.contains('sidebar-wrap')) {
         final title = Scraper.elementSelec(element, '.entry-title a');
         final description = Scraper.elementSelec(element, '.entry-summary');
         final image =
-            Scraper.elementSelecAttr(element, '.feat-holder img', 'src');
+            Scraper.elementSelecAttr(element, '.block-inner img', 'src');
         final author = Scraper.elementSelec(element, '.meta-el.meta-author a');
         final date = Scraper.elementSelec(element, '.meta-el.meta-date');
         final sourceUrl =
@@ -52,7 +52,7 @@ class MangaNewsAllArticles {
     return scrapeList;
   }
 
-  Future<ArticlesEntity> getArticleDetailsScrape(
+  Future<ArticlesEntity> scrapeArticleDetails(
       String url, ArticlesEntity entity) async {
     final Document doc = await Scraper().document(url);
 

@@ -98,20 +98,4 @@ class Profile extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildStepPeriod(String period, bool isSelected) {
-    return Text(
-      period,
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-      ),
-    );
-  }
-
-  Widget _buildStepGraph() {
-    return Container(
-      color: Colors.black,
-    );
-  }
 }

@@ -7,25 +7,27 @@ import 'package:geekcontrol/services/cache/local_cache.dart';
 import 'package:geekcontrol/services/sites/otakupt/otakupt_scraper.dart';
 import 'package:geekcontrol/services/sites/intoxi_animes/webscraper/intoxi_articles_scraper.dart';
 import 'package:geekcontrol/services/sites/mangas_news/webscraper/all_articles.dart';
-  
+
 class ArticlesController extends ChangeNotifier {
   final IntoxiArticles _intoxi = IntoxiArticles();
   final OtakuPT _otakuPt = OtakuPT();
-  final MangaNewsAllArticles _animewsNews = MangaNewsAllArticles();
+  final MangaNews _animewsNews = MangaNews();
+
   Future<List<ArticlesEntity>> articles = Future.value([]);
   Future<List<ArticlesEntity>> articlesSearch = Future.value([]);
   int currenctIndex = 0;
+
   final _cache = LocalCache();
   var currentSite = SitesEnum.animesNew;
 
   Future<void> changedSite(SitesEnum site) async {
     if (SitesEnum.animesNew.key == site.key && currenctIndex != 1) {
-      articles = _animewsNews.getNewsScrap();
+      articles = _animewsNews.scrapeArticles();
       currenctIndex = 1;
       currentSite = site;
     }
     if (SitesEnum.otakuPt.key == site.key && currenctIndex != 2) {
-      articles = _otakuPt.fetchArticles();
+      articles = _otakuPt.scrapeArticles();
       currenctIndex = 2;
       currentSite = site;
     }
@@ -67,7 +69,7 @@ class ArticlesController extends ChangeNotifier {
 
       return cacheArticles.map((json) => ArticlesEntity.fromMap(json)).toList();
     } else {
-      final otakupt = await _otakuPt.fetchArticles();
+      final otakupt = await _otakuPt.scrapeArticles();
       final intoxi = await _intoxi.scrapeArticles(IntoxiUtils.uriStr);
 
       final news = [
@@ -80,21 +82,19 @@ class ArticlesController extends ChangeNotifier {
   }
 
   Future<ArticlesEntity> fetchArticleDetails(
-      String articleUrl, ArticlesEntity originalArticle, String current) async {
+      String url, ArticlesEntity articles, String current) async {
     try {
       if (current == SitesEnum.animesNew.name) {
-        return await _animewsNews.getArticleDetailsScrape(
-            articleUrl, originalArticle);
+        return await _animewsNews.scrapeArticleDetails(url, articles);
       }
       if (current == SitesEnum.otakuPt.name) {
-        return await _otakuPt.getArticleDetailsScrape(
-            articleUrl, originalArticle);
+        return await _otakuPt.scrapeArticleDetails(url, articles);
       }
       if (current == SitesEnum.intoxi.name) {
-        return await _intoxi.scrapeArticleDetails(articleUrl, originalArticle);
+        return await _intoxi.scrapeArticleDetails(url, articles);
       }
       notifyListeners();
-      return originalArticle;
+      return articles;
     } catch (e) {
       throw Exception('Error fetching article details: $e');
     }

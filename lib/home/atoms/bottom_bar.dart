@@ -17,9 +17,7 @@ class BottomBarWidget extends StatelessWidget {
       items: const [
         TabItem(icon: Icons.home),
         TabItem(icon: Icons.newspaper),
-        TabItem(icon: Icons.new_releases),
-        TabItem(icon: Icons.article),
-        TabItem(icon: Icons.person),
+        TabItem(icon: Icons.notification_add),
       ],
       onTap: (index) => GoRouter.of(context).push(routesIndex(index)),
     );

@@ -30,24 +30,13 @@ class WallpapersWebscrap {
 
   Future<void> downloadWallpaper(String uri) async {
     try {
-      // Request storage permission
       if (await Permission.storage.request().isGranted) {
         final url = Uri.parse(uri);
         final path = await _downloadPath();
 
         final file = File('$path/${url.pathSegments.last}');
-
         await file
             .writeAsBytes(await http.get(url).then((value) => value.bodyBytes));
-
-        // Notify the gallery about the new file
-        final result = await Process.run('am', [
-          'broadcast',
-          '-a',
-          'android.intent.action.MEDIA_SCANNER_SCAN_FILE',
-          '-d',
-          'file://${file.path}'
-        ]);
         Logger().i('Wallpaper ${file.path} downloaded');
       } else {
         Logger().e('Storage permission denied');
@@ -59,7 +48,7 @@ class WallpapersWebscrap {
 
   Future<String> _downloadPath() async {
     final directory = await getExternalStorageDirectory();
-    final path = '${directory?.path}/Pictures/Wallpapers';
+    final path = '${directory?.path}';
 
     final dir = Directory(path);
     await dir.create(recursive: true);

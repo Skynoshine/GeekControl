@@ -53,6 +53,8 @@ class ArticleCard extends StatelessWidget {
                 children: [
                   Text(
                     news.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

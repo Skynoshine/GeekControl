@@ -62,6 +62,8 @@ class HitagiCarousel extends StatelessWidget {
                   ),
                   child: Text(
                     title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,

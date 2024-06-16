@@ -9,14 +9,14 @@ class MangaNewsController {
 
   Future<ArticlesEntity> getNewsDetails(
       ArticlesEntity entity, String url) async {
-    return await MangaNewsAllArticles().getArticleDetailsScrape(url, entity);
+    return await MangaNews().scrapeArticleDetails(url, entity);
   }
 
   Future<List<ArticlesEntity>> getAllNews() async {
-    return await MangaNewsAllArticles().getNewsScrap();
+    return await MangaNews().scrapeArticles();
   }
 
   Future<List<ArticlesEntity>> getLimitedNews({required int quantity}) async {
-    return await MangaNewsAllArticles().scrapeLimitedNewsList(quantity);
+    return await MangaNews().scrapeLimitedNewsList(quantity);
   }
 }
